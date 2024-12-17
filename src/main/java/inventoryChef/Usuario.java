@@ -1,6 +1,9 @@
 package inventoryChef;
 
 public class Usuario {
+
+
+    protected String rol;
     private String nombre;
     private String correo;
     private int edad;
@@ -9,7 +12,10 @@ public class Usuario {
         this.nombre = nombre;
         this.correo = correo;
         this.edad = edad;
+        this.rol = "Usuario";
     }
+
+    public String getRol() { return rol; }
 
     public String getNombre() {
         return nombre;

@@ -1,7 +1,7 @@
 package controller;
 
 
-import org.example.models.Usuario;
+import inventoryChef.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;

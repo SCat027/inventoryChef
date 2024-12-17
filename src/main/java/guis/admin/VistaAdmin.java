@@ -1,7 +1,7 @@
 package guis.admin;
 
-import org.example.controller.AdminController;
-import org.example.models.Usuario;
+import controller.AdminController;
+import inventoryChef.Usuario;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
