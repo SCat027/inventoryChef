@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Reponedor extends Usuario {
 
-    public Reponedor(String nombre, String correo, int edad) {super(nombre, correo, edad);super.rol = "Reponedor";}
+    public Reponedor(String nombre, String correo, int edad, String clave, int id) {super(nombre, correo, edad, clave, id);super.rol = "Reponedor";}
 
     public void consultarAlmacen() {
         List<Alimento> almacen = cargarAlmacen();

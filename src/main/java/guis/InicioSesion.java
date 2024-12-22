@@ -1,7 +1,12 @@
 package guis;
 
-import org.example.guis.chef.VistaChef;
-import org.example.models.Chef;
+import controller.MainController;
+import guis.admin.VistaAdmin;
+import guis.chef.VistaChef;
+import guis.reponedor.VistaReponedor;
+import inventoryChef.Admin;
+import inventoryChef.Chef;
+import inventoryChef.Reponedor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,13 +89,28 @@ public class InicioSesion extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
                 String password = new String(passwordField.getPassword());
-                if (authenticate(username, password)) {
+                if (authenticate(username, password).equals("chef")) {
                     JOptionPane.showMessageDialog(InicioSesion.this, "Inicio de sesión exitoso");
                     SwingUtilities.invokeLater(() -> {
-                        VistaChef inventarioChef = new VistaChef(new Chef("pepe","pollas",201133,"Cocina 1"));
+                        VistaChef inventarioChef = new VistaChef(new Chef("pepe","pollas",12,"pollita",1001));
                         inventarioChef.setVisible(true);
                     });
                     dispose();
+                } else if (authenticate(username, password).equals("admin")) {
+                    JOptionPane.showMessageDialog(InicioSesion.this, "Inicio de sesión exitoso");
+                    SwingUtilities.invokeLater(() -> {
+                        VistaAdmin inventarioChef = new VistaAdmin(new Admin("Admin","a.admin01@ufromail.cl",21,"clave321",3001));
+                        inventarioChef.setVisible(true);
+                    });
+                    dispose();
+                } else if (authenticate(username, password).equals("reponedor")) {
+                    JOptionPane.showMessageDialog(InicioSesion.this, "Inicio de sesión exitoso");
+                    SwingUtilities.invokeLater(() -> {
+                        VistaReponedor inventarioChef = new VistaReponedor(new Reponedor("pepe","p.perez",30,"Chavito30",2001));
+                        inventarioChef.setVisible(true);
+                    });
+                    dispose();
+
                 } else {
                     JOptionPane.showMessageDialog(InicioSesion.this, "Credenciales inválidas", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -106,8 +126,16 @@ public class InicioSesion extends JFrame {
         });
     }
 
-    private boolean authenticate(String username, String password) {
-        return "admin".equals(username) && "1234".equals(password);
+    private String authenticate(String username, String password) {
+        if("admin".equals(username) && "1234".equals(password)){
+            return "admin";
+        } else if ("chef".equals(username) && "1234".equals(password)) {
+            return "chef";
+        } else if ("reponedor".equals(username) && "1234".equals(password)) {
+            return "reponedor";
+        } else{
+            return "NoUser";
+        }
     }
 
     public static void main(String[] args) {

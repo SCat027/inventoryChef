@@ -1,140 +1,139 @@
 package guis.chef;
 
-import org.example.models.Ingrediente;
-import org.example.models.Receta;
+import controller.ChefController;
+import inventoryChef.Alimento;
+import inventoryChef.Chef;
+import inventoryChef.Ingrediente;
+import inventoryChef.Receta;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.util.ArrayList;
 
-public class AgregarReceta extends JFrame {
-    private JTextField recetaNombreField;
-    private JTextField ingredienteNombreField;
-    private JTextField cantidadField;
-    private JTextField unidadField;
-    private DefaultListModel<String> ingredientesListModel;
-    private JList<String> ingredientesList;
-    private ArrayList<Ingrediente> ingredientes;
+public class AgregarReceta extends JFrame{
+    private JFrame frame;
+    private ChefController controller;
+    private List<Alimento> alimentos;
 
-    public AgregarReceta() {
-        setTitle("Agregar Receta");
-        setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
+    public AgregarReceta(Chef chef) {
+        controller = new ChefController(chef);
+        alimentos = controller.cargarAlimentos();
+        inicializarUI();
+    }
 
-        ingredientes = new ArrayList<>();
+    private void inicializarUI() {
+        // Crear ventana principal
+        frame = new JFrame("Agregar Receta");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.getContentPane().setBackground(Color.WHITE);
 
-        // Panel principal
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        // Layout principal
+        frame.setLayout(new BorderLayout());
 
-        // Panel para el nombre de la receta
-        JPanel recetaPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel recetaLabel = new JLabel("Nombre de la Receta: ");
-        recetaNombreField = new JTextField(20);
-        recetaPanel.add(recetaLabel);
-        recetaPanel.add(recetaNombreField);
+        // Panel superior para el nombre de la receta
+        JPanel panelSuperior = new JPanel();
+        panelSuperior.setBackground(new Color(173, 216, 230)); // Celeste
+        panelSuperior.setLayout(new FlowLayout());
 
-        mainPanel.add(recetaPanel, BorderLayout.NORTH);
+        JLabel labelNombre = new JLabel("Nombre de la receta:");
+        JTextField textNombre = new JTextField(20);
+        panelSuperior.add(labelNombre);
+        panelSuperior.add(textNombre);
+        frame.add(panelSuperior, BorderLayout.NORTH);
 
-        // Panel para agregar ingredientes
-        JPanel ingredientePanel = new JPanel(new GridLayout(2, 4, 10, 10));
-        ingredientePanel.setBorder(BorderFactory.createTitledBorder("Agregar Ingrediente"));
+        // Panel central para ingredientes
+        JPanel panelCentral = new JPanel();
+        panelCentral.setBackground(Color.WHITE);
+        panelCentral.setLayout(new BorderLayout());
 
-        ingredientePanel.add(new JLabel("Nombre:"));
-        ingredienteNombreField = new JTextField();
-        ingredientePanel.add(ingredienteNombreField);
+        JLabel labelIngredientes = new JLabel("Ingredientes:");
+        panelCentral.add(labelIngredientes, BorderLayout.NORTH);
 
-        ingredientePanel.add(new JLabel("Cantidad:"));
-        cantidadField = new JTextField();
-        ingredientePanel.add(cantidadField);
+        DefaultListModel<String> modeloLista = new DefaultListModel<>();
+        JList<String> listaIngredientes = new JList<>(modeloLista);
+        JScrollPane scrollLista = new JScrollPane(listaIngredientes);
+        panelCentral.add(scrollLista, BorderLayout.CENTER);
 
-        ingredientePanel.add(new JLabel("Unidad:"));
-        unidadField = new JTextField();
-        ingredientePanel.add(unidadField);
+        JComboBox<String> comboAlimentos = new JComboBox<>(
+                alimentos.stream().map(Alimento::getNombre).toArray(String[]::new)
+        );
+        JTextField textCantidad = new JTextField(5);
+        JButton botonAgregarIngrediente = new JButton("Agregar");
 
-        JButton agregarIngredienteBtn = new JButton("Agregar Ingrediente");
-        ingredientePanel.add(agregarIngredienteBtn);
+        JPanel panelAgregar = new JPanel();
+        panelAgregar.setBackground(Color.LIGHT_GRAY);
+        panelAgregar.add(comboAlimentos);
+        panelAgregar.add(new JLabel("Cantidad:"));
+        panelAgregar.add(textCantidad);
+        panelAgregar.add(botonAgregarIngrediente);
+        panelCentral.add(panelAgregar, BorderLayout.SOUTH);
+        frame.add(panelCentral, BorderLayout.CENTER);
 
-        mainPanel.add(ingredientePanel, BorderLayout.CENTER);
+        // Panel inferior para instrucciones y botón guardar
+        JPanel panelInferior = new JPanel();
+        panelInferior.setBackground(new Color(220, 220, 220)); // Gris claro
+        panelInferior.setLayout(new BorderLayout());
 
-        // Lista de ingredientes agregados
-        JPanel listaPanel = new JPanel(new BorderLayout());
-        listaPanel.setBorder(BorderFactory.createTitledBorder("Ingredientes de la Receta"));
+        JLabel labelInstrucciones = new JLabel("Instrucciones:");
+        JTextArea textInstrucciones = new JTextArea(5, 40);
+        JScrollPane scrollInstrucciones = new JScrollPane(textInstrucciones);
 
-        ingredientesListModel = new DefaultListModel<>();
-        ingredientesList = new JList<>(ingredientesListModel);
-        JScrollPane scrollPane = new JScrollPane(ingredientesList);
+        panelInferior.add(labelInstrucciones, BorderLayout.NORTH);
+        panelInferior.add(scrollInstrucciones, BorderLayout.CENTER);
 
-        listaPanel.add(scrollPane, BorderLayout.CENTER);
+        JButton botonGuardar = new JButton("Guardar Receta");
+        botonGuardar.setBackground(new Color(173, 216, 230)); // Celeste
+        botonGuardar.setFocusPainted(false);
+        botonGuardar.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1, true));
+        panelInferior.add(botonGuardar, BorderLayout.SOUTH);
 
-        mainPanel.add(listaPanel, BorderLayout.SOUTH);
+        frame.add(panelInferior, BorderLayout.SOUTH);
 
-        add(mainPanel, BorderLayout.CENTER);
-
-        // Botón para guardar la receta
-        JButton guardarRecetaBtn = new JButton("Guardar Receta");
-        add(guardarRecetaBtn, BorderLayout.SOUTH);
-
-        // Acción para agregar un ingrediente
-        agregarIngredienteBtn.addActionListener(e -> {
-            String nombre = ingredienteNombreField.getText();
-            String cantidadText = cantidadField.getText();
-            String unidad = unidadField.getText();
-
-            if (nombre.isEmpty() || cantidadText.isEmpty() || unidad.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Todos los campos del ingrediente son obligatorios.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
+        // Acción para agregar ingredientes
+        botonAgregarIngrediente.addActionListener(e -> {
+            String alimentoSeleccionado = (String) comboAlimentos.getSelectedItem();
+            String cantidadStr = textCantidad.getText();
             try {
-                double cantidad = Double.parseDouble(cantidadText);
-                Ingrediente ingrediente = new Ingrediente(nombre, cantidad, unidad);
-                ingredientes.add(ingrediente);
-                ingredientesListModel.addElement(ingrediente.toString());
-
-                // Limpiar campos
-                ingredienteNombreField.setText("");
-                cantidadField.setText("");
-                unidadField.setText("");
+                int cantidad = Integer.parseInt(cantidadStr);
+                modeloLista.addElement(alimentoSeleccionado + " - " + cantidad);
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "La cantidad debe ser un número válido.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Cantidad inválida.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        // Acción para guardar la receta completa
-        guardarRecetaBtn.addActionListener(e -> {
-            String nombreReceta = recetaNombreField.getText();
+        // Acción para guardar receta
+        botonGuardar.addActionListener(e -> {
+            String nombreReceta = textNombre.getText();
+            String instrucciones = textInstrucciones.getText();
+            List<Ingrediente> ingredientes = new ArrayList<>();
 
-            if (nombreReceta.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "El nombre de la receta no puede estar vacío.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+            for (int i = 0; i < modeloLista.size(); i++) {
+                String[] datos = modeloLista.get(i).split(" - ");
+                String nombreAlimento = datos[0];
+                int cantidad = Integer.parseInt(datos[1]);
+
+                Alimento alimento = alimentos.stream()
+                        .filter(a -> a.getNombre().equals(nombreAlimento))
+                        .findFirst()
+                        .orElse(null);
+
+                if (alimento != null) {
+                    ingredientes.add(new Ingrediente(alimento, cantidad));
+                }
             }
 
-            if (ingredientes.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Debe agregar al menos un ingrediente.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+            Receta receta = controller.crearReceta(nombreReceta, ingredientes, instrucciones);
 
-            Receta receta = new Receta(nombreReceta, ingredientes);
-            JOptionPane.showMessageDialog(this, "Receta guardada:\n" + receta.toString(),
-                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-            // Reiniciar la GUI
-            recetaNombreField.setText("");
-            ingredientes.clear();
-            ingredientesListModel.clear();
+            JOptionPane.showMessageDialog(frame, "Receta guardada: " + receta.getNombre(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
         });
+
+        // Mostrar la ventana
+        frame.setVisible(true);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            AgregarReceta gui = new AgregarReceta();
-            gui.setVisible(true);
-        });
+        new AgregarReceta();
     }
 }

@@ -1,6 +1,9 @@
 package guis.admin;
 
 import controller.AdminController;
+import inventoryChef.Admin;
+import inventoryChef.Chef;
+import inventoryChef.Reponedor;
 import inventoryChef.Usuario;
 
 import javax.swing.*;
@@ -13,10 +16,10 @@ import java.util.List;
 public class VistaAdmin extends JFrame {
     private JTable table;
     private DefaultTableModel tableModel;
-    private AdminController usuarioController;
+    private AdminController adminController;
 
-    public VistaAdmin() {
-        usuarioController = new AdminController(); // Inicializa el Controller
+    public VistaAdmin(Admin admin) {
+        adminController = new AdminController(admin); // Inicializa el Controller
         setTitle("Gestión de Usuarios");
         setSize(800, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,7 +64,7 @@ public class VistaAdmin extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
-                    Usuario usuario = usuarioController.getUsuarios().get(selectedRow);
+                    Usuario usuario = adminController.getUsuarios().get(selectedRow);
                     abrirDetalleUsuario(usuario);
                 }
             }
@@ -71,7 +74,7 @@ public class VistaAdmin extends JFrame {
     // Método para cargar usuarios desde el controller
     private void cargarUsuarios() {
         tableModel.setRowCount(0); // Limpia la tabla
-        List<Usuario> usuarios = usuarioController.getUsuarios();
+        List<Usuario> usuarios = adminController.getUsuarios();
         for (Usuario usuario : usuarios) {
             tableModel.addRow(new Object[]{usuario.getNombre(), usuario.getRol()});
         }
@@ -87,6 +90,12 @@ public class VistaAdmin extends JFrame {
         JLabel lblNombre = new JLabel("Nombre:");
         JTextField txtNombre = new JTextField();
 
+        JLabel lblEdad = new JLabel("Nombre:");
+        JTextField txtEdad = new JTextField();
+
+        JLabel lblCorreo = new JLabel("Correo:");
+        JTextField txtCorreo = new JTextField();
+
         JLabel lblRol = new JLabel("Rol:");
         JTextField txtRol = new JTextField();
 
@@ -97,6 +106,10 @@ public class VistaAdmin extends JFrame {
 
         frame.add(lblNombre);
         frame.add(txtNombre);
+        frame.add(lblEdad);
+        frame.add(txtEdad);
+        frame.add(lblCorreo);
+        frame.add(txtCorreo);
         frame.add(lblRol);
         frame.add(txtRol);
         frame.add(lblContraseña);
@@ -106,15 +119,36 @@ public class VistaAdmin extends JFrame {
 
         btnGuardar.addActionListener(e -> {
             String nombre = txtNombre.getText();
+            int edad = Integer.parseInt(txtEdad.getText());
+            String correo = txtCorreo.getText();
             String rol = txtRol.getText();
             String contraseña = txtContraseña.getText();
 
-            if (!nombre.isEmpty() && !rol.isEmpty() && !contraseña.isEmpty()) {
-                int id = usuarioController.getUsuarios().size() + 1;
-                Usuario nuevoUsuario = new Usuario(id, nombre, rol, contraseña);
-                usuarioController.addUsuario(nuevoUsuario);
-                cargarUsuarios();
-                frame.dispose();
+            if (!nombre.isEmpty() && !correo.isEmpty() && !rol.isEmpty() && !contraseña.isEmpty()) {
+
+                switch (rol) {
+                    case "Chef" -> {
+                        int id = adminController.getUsuarios().size() + 1000;
+                        Chef chef = new Chef(nombre, correo, edad, contraseña, id);
+                        adminController.addUsuario(chef);
+                        cargarUsuarios();
+                        frame.dispose();
+                    }
+                    case "Reponedor" -> {
+                        int id = adminController.getUsuarios().size() + 2000;
+                        Reponedor reponedor = new Reponedor(nombre, correo, edad, contraseña, id);
+                        adminController.addUsuario(reponedor);
+                        cargarUsuarios();
+                        frame.dispose();
+                    }
+                    case "Admin" -> {
+                        int id = adminController.getUsuarios().size() + 3000;
+                        Admin admin = new Admin(nombre, correo, edad, contraseña, id);
+                        adminController.addUsuario(admin);
+                        cargarUsuarios();
+                        frame.dispose();
+                    }
+                }
             } else {
                 JOptionPane.showMessageDialog(frame, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -130,13 +164,17 @@ public class VistaAdmin extends JFrame {
         frame.setLayout(new GridLayout(4, 1, 10, 10));
         frame.setLocationRelativeTo(this);
 
-        JLabel lblId = new JLabel("ID: " + usuario.getId());
+        JLabel lblId = new JLabel("Id: " + usuario.getId());
         JLabel lblNombre = new JLabel("Nombre: " + usuario.getNombre());
+        JLabel lblEdad = new JLabel("Edad: " + usuario.getEdad());
+        JLabel lblCorreo = new JLabel("Correo: " + usuario.getCorreo());
         JLabel lblRol = new JLabel("Rol: " + usuario.getRol());
-        JLabel lblContraseña = new JLabel("Contraseña: " + usuario.getContraseña());
+        JLabel lblContraseña = new JLabel("Contraseña: " + usuario.getClave());
 
         frame.add(lblId);
         frame.add(lblNombre);
+        frame.add(lblEdad);
+        frame.add(lblCorreo);
         frame.add(lblRol);
         frame.add(lblContraseña);
 
@@ -144,11 +182,8 @@ public class VistaAdmin extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            VistaAdmin gui = new VistaAdmin();
-            gui.setVisible(true);
-        });
+
     }
 }
-}
+
 

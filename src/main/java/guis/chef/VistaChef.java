@@ -1,6 +1,6 @@
 package guis.chef;
 
-import org.example.models.Chef;
+import inventoryChef.Chef;
 
 import javax.swing.*;
 import java.awt.*;
@@ -87,13 +87,6 @@ public class VistaChef extends JFrame {
         panel.add(label, BorderLayout.CENTER);
 
         return panel;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            VistaChef frame = new VistaChef();
-            frame.setVisible(true);
-        });
     }
 }
 

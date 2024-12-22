@@ -16,6 +16,14 @@ public class Alimento {
         this.cantidad = cantidad;
     }
 
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
     public String getNombre() {
         return nombre;
     }

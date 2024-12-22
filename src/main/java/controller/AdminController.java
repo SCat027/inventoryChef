@@ -1,29 +1,30 @@
 package controller;
 
-
+import datos.Archivo;
 import inventoryChef.Usuario;
+import inventoryChef.Admin;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdminController {
     private List<Usuario> listaUsuarios;
+    private Admin admin;
 
-    public AdminController() {
-        // Simulación de usuarios existentes
-        listaUsuarios = new ArrayList<>();
-        listaUsuarios.add(new Usuario(1, "Juan Pérez", "Administrador", "1234"));
-        listaUsuarios.add(new Usuario(2, "María López", "Editor", "abcd"));
+    public AdminController( Admin admin) {
+        this.admin = admin;
+        listaUsuarios = cargarUsuarios();
     }
 
-    // Obtener lista de usuarios
     public List<Usuario> getUsuarios() {
         return listaUsuarios;
     }
 
-    // Agregar un nuevo usuario
     public void addUsuario(Usuario usuario) {
-        listaUsuarios.add(usuario);
+        admin.añadirUsuario(usuario);
+    }
+    public List<Usuario> cargarUsuarios(){
+        listaUsuarios = Archivo.cargarUsuarios();
+        return listaUsuarios;
     }
 }
 
