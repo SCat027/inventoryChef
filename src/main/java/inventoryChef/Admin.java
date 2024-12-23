@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Admin extends Usuario {
 
-    public Admin(String nombre, String correo, int edad) {
-        super(nombre, correo, edad);
+    public Admin(String nombre, String correo, int edad, String id, String contrasena) {
+        super(nombre, correo, edad, id, contrasena);
     }
 
     public void consultarUsuarios() {
@@ -17,56 +17,52 @@ public class Admin extends Usuario {
         }
     }
 
-    public boolean añadirUsuario(Usuario usuario) {
+    public void crearUsuario(String nombre, String correo, int edad, String id, String contrasena) {
         List<Usuario> usuarios = cargarUsuarios();
-        if (usuarios == null) return false;
-
-        if (usuarioExiste(usuarios, usuario.getNombre())) {
-            System.out.println("El usuario \"" + usuario.getNombre() + "\" ya existe.");
-            return false;
+        if (usuarios == null) {
+            throw new IllegalStateException("No se pudo cargar la lista de usuarios.");
         }
 
-        usuarios.add(usuario);
+        if (usuarioExiste(usuarios, id)) {
+            throw new IllegalArgumentException("El usuario con ID \"" + id + "\" ya existe.");
+        }
+
+        Usuario nuevoUsuario = new Usuario(nombre, correo, edad, id, contrasena);
+        usuarios.add(nuevoUsuario);
         guardarUsuarios(usuarios);
-        System.out.println("Usuario \"" + usuario.getNombre() + "\" añadido correctamente.");
-        return true;
+        System.out.println("Usuario \"" + nombre + "\" creado correctamente.");
     }
 
-    public boolean eliminarUsuario(String nombre) {
+    public void eliminarUsuario(String nombre) {
         List<Usuario> usuarios = cargarUsuarios();
         if (usuarios == null || usuarios.isEmpty()) {
-            System.out.println("No hay usuarios registrados.");
-            return false;
+            throw new IllegalStateException("No hay usuarios registrados.");
         }
 
-        if (usuarios.removeIf(u -> u.getNombre().equalsIgnoreCase(nombre))) {
-            guardarUsuarios(usuarios);
-            System.out.println("Usuario \"" + nombre + "\" eliminado correctamente.");
-            return true;
-        } else {
-            System.out.println("El usuario \"" + nombre + "\" no existe.");
-            return false;
+        boolean eliminado = usuarios.removeIf(u -> u.getNombre().equalsIgnoreCase(nombre));
+        if (!eliminado) {
+            throw new IllegalArgumentException("El usuario \"" + nombre + "\" no existe.");
         }
+
+        guardarUsuarios(usuarios);
+        System.out.println("Usuario \"" + nombre + "\" eliminado correctamente.");
     }
 
-    public boolean editarInformacionUsuario(String nombre, String nuevoCorreo, int nuevaEdad) {
+    public void editarInformacionUsuario(String nombre, String nuevoCorreo, int nuevaEdad) {
         List<Usuario> usuarios = cargarUsuarios();
         if (usuarios == null || usuarios.isEmpty()) {
-            System.out.println("No hay usuarios registrados.");
-            return false;
+            throw new IllegalStateException("No hay usuarios registrados.");
         }
 
         Usuario usuario = buscarUsuario(usuarios, nombre);
-        if (usuario != null) {
-            usuario.setCorreo(nuevoCorreo);
-            usuario.setEdad(nuevaEdad);
-            guardarUsuarios(usuarios);
-            System.out.println("Información del usuario \"" + nombre + "\" editada correctamente.");
-            return true;
-        } else {
-            System.out.println("El usuario \"" + nombre + "\" no existe.");
-            return false;
+        if (usuario == null) {
+            throw new IllegalArgumentException("El usuario \"" + nombre + "\" no existe.");
         }
+
+        usuario.setCorreo(nuevoCorreo);
+        usuario.setEdad(nuevaEdad);
+        guardarUsuarios(usuarios);
+        System.out.println("Información del usuario \"" + nombre + "\" editada correctamente.");
     }
 
     // ---------------- Métodos Auxiliares ----------------

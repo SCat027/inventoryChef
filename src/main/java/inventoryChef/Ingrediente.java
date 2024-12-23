@@ -1,8 +1,8 @@
 package inventoryChef;
 
 public class Ingrediente {
-    private Alimento alimento; // Objeto Alimento
-    private int cantidad;      // Cantidad necesaria para la receta
+    private Alimento alimento;
+    private int cantidad;
 
     public Ingrediente(Alimento alimento, int cantidad) {
         this.alimento = alimento;
