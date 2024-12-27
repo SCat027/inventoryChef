@@ -6,6 +6,9 @@ public class Usuario {
     private int edad;
     private String id;
     private String contrasena;
+    protected String rol;
+
+
 
     public Usuario(String nombre, String correo, int edad, String id, String contrasena) {
         this.nombre = nombre;
@@ -13,6 +16,15 @@ public class Usuario {
         this.edad = edad;
         this.id = id;
         this.contrasena = contrasena;
+        this.rol = "Usuario";
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
     public String getNombre() {

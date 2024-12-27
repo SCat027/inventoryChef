@@ -7,6 +7,7 @@ public class Admin extends Usuario {
 
     public Admin(String nombre, String correo, int edad, String id, String contrasena) {
         super(nombre, correo, edad, id, contrasena);
+        super.rol = "Admin";
     }
 
     public void consultarUsuarios() {

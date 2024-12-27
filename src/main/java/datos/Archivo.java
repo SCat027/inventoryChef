@@ -1,6 +1,7 @@
 package datos;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import inventoryChef.*;
@@ -39,14 +40,26 @@ public class Archivo {
     }
 
     public static List<Usuario> cargarUsuarios() {
+        ObjectMapper mapper = new ObjectMapper(); // Instancia del mapper
+        File archivo = new File("usuarios.json");
+
         try {
+            // Verificar si el archivo existe
+            if (!archivo.exists()) {
+                // Crear archivo con lista vacía (o datos predeterminados)
+                List<Usuario> usuariosIniciales = new ArrayList<>();
+                mapper.writeValue(archivo, usuariosIniciales);
+                System.out.println("El archivo 'usuarios.json' no existía. Se creó con una lista inicial.");
+            }
+
+            // Leer y retornar los usuarios del archivo
             return mapper.readValue(
-                    new File("usuarios.json"),
+                    archivo,
                     mapper.getTypeFactory().constructCollectionType(List.class, Usuario.class)
             );
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage() + " al cargar la data de: usuarios.json");
-            return null;
+            return new ArrayList<>(); // Retorna una lista vacía en caso de error
         }
     }
 
@@ -70,4 +83,4 @@ public class Archivo {
     }
 }
 
-}
+
