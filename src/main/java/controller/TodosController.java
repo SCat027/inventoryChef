@@ -10,6 +10,7 @@ public class TodosController {
     }
     public String autenticarRol(Usuario usuario){
         InicioSesion inicioSesion = new InicioSesion();
+        System.out.println(inicioSesion.entregarRol(usuario));
         return  inicioSesion.entregarRol(usuario);
     }
 

@@ -4,7 +4,10 @@ import datos.Archivo;
 import java.util.List;
 
 public class Reponedor extends Usuario {
-
+    public Reponedor() {
+        super(); // Llama al constructor por defecto de Usuario
+        this.rol = "Reponedor";
+    }
     public Reponedor(String nombre, String correo, int edad, String id, String contrasena) { super(nombre, correo, edad, id, contrasena);super.rol = "Reponedor"; }
 
 

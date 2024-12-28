@@ -4,7 +4,10 @@ import datos.Archivo;
 import java.util.List;
 
 public class Admin extends Usuario {
-
+    public Admin() {
+        super(); // Llama al constructor por defecto de Usuario
+        this.rol = "Admin";
+    }
     public Admin(String nombre, String correo, int edad, String id, String contrasena) {
         super(nombre, correo, edad, id, contrasena);
         super.rol = "Admin";
@@ -18,7 +21,7 @@ public class Admin extends Usuario {
         }
     }
 
-    public void crearUsuario(String nombre, String correo, int edad, String id, String contrasena) {
+    public void crearUsuario(String nombre, String correo, int edad, String id, String contrasena, String rol) {
         List<Usuario> usuarios = cargarUsuarios();
         if (usuarios == null) {
             throw new IllegalStateException("No se pudo cargar la lista de usuarios.");
@@ -27,10 +30,19 @@ public class Admin extends Usuario {
         if (usuarioExiste(usuarios, id)) {
             throw new IllegalArgumentException("El usuario con ID \"" + id + "\" ya existe.");
         }
-
-        Usuario nuevoUsuario = new Usuario(nombre, correo, edad, id, contrasena);
-        usuarios.add(nuevoUsuario);
-        guardarUsuarios(usuarios);
+        if (rol.equals("Admin")){
+            Admin admin = new Admin(nombre, correo, edad, id, contrasena);
+            usuarios.add(admin);
+            guardarUsuarios(usuarios);
+        } else if (rol.equals("Chef")) {
+            Chef chef = new Chef(nombre, correo, edad, id, contrasena);
+            usuarios.add(chef);
+            guardarUsuarios(usuarios);
+        } else if (rol.equals("Reponedor")) {
+            Reponedor reponedor = new Reponedor(nombre, correo, edad, id, contrasena);
+            usuarios.add(reponedor);
+            guardarUsuarios(usuarios);
+        }
         System.out.println("Usuario \"" + nombre + "\" creado correctamente.");
     }
 
@@ -68,19 +80,19 @@ public class Admin extends Usuario {
 
     // ---------------- Métodos Auxiliares ----------------
 
-    private List<Usuario> cargarUsuarios() {
+    public  List<Usuario> cargarUsuarios() {
         return Archivo.cargarUsuarios();
     }
 
-    private void guardarUsuarios(List<Usuario> usuarios) {
+    public void guardarUsuarios(List<Usuario> usuarios) {
         Archivo.guardarUsuarios(usuarios);
     }
 
-    private boolean usuarioExiste(List<Usuario> usuarios, String nombre) {
+    public boolean usuarioExiste(List<Usuario> usuarios, String nombre) {
         return usuarios.stream().anyMatch(u -> u.getNombre().equalsIgnoreCase(nombre));
     }
 
-    private Usuario buscarUsuario(List<Usuario> usuarios, String nombre) {
+    public Usuario buscarUsuario(List<Usuario> usuarios, String nombre) {
         return usuarios.stream()
                 .filter(u -> u.getNombre().equalsIgnoreCase(nombre))
                 .findFirst()

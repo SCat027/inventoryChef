@@ -44,15 +44,12 @@ public class Archivo {
         File archivo = new File("usuarios.json");
 
         try {
-            // Verificar si el archivo existe
             if (!archivo.exists()) {
                 // Crear archivo con lista vacía (o datos predeterminados)
                 List<Usuario> usuariosIniciales = new ArrayList<>();
                 mapper.writeValue(archivo, usuariosIniciales);
                 System.out.println("El archivo 'usuarios.json' no existía. Se creó con una lista inicial.");
             }
-
-            // Leer y retornar los usuarios del archivo
             return mapper.readValue(
                     archivo,
                     mapper.getTypeFactory().constructCollectionType(List.class, Usuario.class)

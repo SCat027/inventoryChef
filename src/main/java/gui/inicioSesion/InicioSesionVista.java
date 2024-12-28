@@ -90,24 +90,24 @@ public class InicioSesionVista extends JFrame {
                 TodosController controller = new TodosController();
                 String username = usernameField.getText();
                 String password = new String(passwordField.getPassword());
-                if (controller.autenticarRol(controller.validarInicio(username, password)).equals("chef")) {
+                if (controller.autenticarRol(controller.validarInicio(username, password)).equals("Chef")) {
                     JOptionPane.showMessageDialog(InicioSesionVista.this, "Inicio de sesión exitoso");
                     SwingUtilities.invokeLater(() -> {
-                        VistaChef inventarioChef = new VistaChef();
+                        VistaChef inventarioChef = new VistaChef((Chef) controller.validarInicio(username, password));
                         inventarioChef.setVisible(true);
                     });
                     dispose();
-                } else if (controller.autenticarRol(controller.validarInicio(username, password)).equals("admin")) {
+                } else if (controller.autenticarRol(controller.validarInicio(username, password)).equals("Admin")) {
                     JOptionPane.showMessageDialog(InicioSesionVista.this, "Inicio de sesión exitoso");
                     SwingUtilities.invokeLater(() -> {
-                        VistaAdmin inventarioChef = new VistaAdmin();
+                        VistaAdmin inventarioChef = new VistaAdmin((Admin) controller.validarInicio(username, password));
                         inventarioChef.setVisible(true);
                     });
                     dispose();
-                } else if (controller.autenticarRol(controller.validarInicio(username, password)).equals("reponedor")) {
+                } else if (controller.autenticarRol(controller.validarInicio(username, password)).equals("Reponedor")) {
                     JOptionPane.showMessageDialog(InicioSesionVista.this, "Inicio de sesión exitoso");
                     SwingUtilities.invokeLater(() -> {
-                        VistaReponedor inventarioChef = new VistaReponedor();
+                        VistaReponedor inventarioChef = new VistaReponedor((Reponedor) controller.validarInicio(username, password));
                         inventarioChef.setVisible(true);
                     });
                     dispose();

@@ -9,7 +9,8 @@ public class Usuario {
     protected String rol;
 
 
-
+    public Usuario() {
+    }
     public Usuario(String nombre, String correo, int edad, String id, String contrasena) {
         this.nombre = nombre;
         this.correo = correo;
@@ -17,6 +18,13 @@ public class Usuario {
         this.id = id;
         this.contrasena = contrasena;
         this.rol = "Usuario";
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+    public int getEdad() {
+        return edad;
     }
 
     public String getRol() {
