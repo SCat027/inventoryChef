@@ -31,5 +31,4 @@ public class InicioSesion {
     public String entregarRol(Usuario user) {
         return user.getRol();
     }
-
 }

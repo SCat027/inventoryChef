@@ -1,26 +1,13 @@
 package gui.admin;
 
 import javax.swing.*;
-
 import controller.TodosController;
 import inventoryChef.Admin;
-import inventoryChef.Chef;
-import inventoryChef.Reponedor;
 import inventoryChef.Usuario;
-
-import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
 
 public class VistaAdmin extends JFrame {
 
@@ -28,13 +15,14 @@ public class VistaAdmin extends JFrame {
     private JFrame mainFrame;
     private JTable userTable;
     private DefaultTableModel tableModel;
+    private TodosController controller;
 
     public VistaAdmin(Admin admin) {
         this.admin = admin;
-        initialize();
+        this.controller = new TodosController();
+        iniciar();
     }
-
-    private void initialize() {
+    private void iniciar() {
         mainFrame = new JFrame("Bienvenido Admin");
         mainFrame.setSize(800, 600);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,15 +43,13 @@ public class VistaAdmin extends JFrame {
         userTable = new JTable(tableModel) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 0; // Solo permitir editar la columna "Seleccionar"
+                return column == 0;
             }
-
             @Override
             public Class<?> getColumnClass(int column) {
                 return column == 0 ? Boolean.class : String.class;
             }
         };
-
         JScrollPane tableScrollPane = new JScrollPane(userTable);
         mainFrame.add(tableScrollPane, BorderLayout.CENTER);
 
@@ -71,11 +57,10 @@ public class VistaAdmin extends JFrame {
         viewDetailsButton.addActionListener(e -> openUserDetailsWindow());
         mainFrame.add(viewDetailsButton, BorderLayout.SOUTH);
 
-        loadUserData();
+        cargarDataUsuario();
         mainFrame.setVisible(true);
     }
-
-    private void loadUserData() {
+    private void cargarDataUsuario() {
         List<Usuario> usuarios = admin.cargarUsuarios();
         if (usuarios != null) {
             tableModel.setRowCount(0);
@@ -84,7 +69,6 @@ public class VistaAdmin extends JFrame {
             }
         }
     }
-
     private void openUserDetailsWindow() {
         int selectedRow = getSelectedRow();
         if (selectedRow == -1) {
@@ -123,13 +107,12 @@ public class VistaAdmin extends JFrame {
         deleteButton.addActionListener(e -> {
             admin.eliminarUsuario(usuario.getNombre());
             detailsFrame.dispose();
-            loadUserData();
+            cargarDataUsuario();
         });
         detailsFrame.add(deleteButton);
 
         detailsFrame.setVisible(true);
     }
-
     private void openEditUserWindow(Usuario usuario) {
         JFrame editFrame = new JFrame("Editar Usuario");
         editFrame.setSize(400, 300);
@@ -150,7 +133,7 @@ public class VistaAdmin extends JFrame {
                 int nuevaEdad = Integer.parseInt(ageField.getText());
                 admin.editarInformacionUsuario(usuario.getNombre(), emailField.getText(), nuevaEdad);
                 editFrame.dispose();
-                loadUserData();
+                cargarDataUsuario();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(editFrame, "Edad no válida.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -159,24 +142,23 @@ public class VistaAdmin extends JFrame {
 
         editFrame.setVisible(true);
     }
-
     private void openCreateUserWindow() {
         JFrame createFrame = new JFrame("Crear Usuario");
         createFrame.setSize(400, 300);
         createFrame.setLayout(new GridLayout(6, 2));
 
         JTextField nameField = new JTextField();
-        JTextField rolField = new JTextField();
         JTextField emailField = new JTextField();
         JTextField ageField = new JTextField();
-        JTextField idField = new JTextField();
         JPasswordField passwordField = new JPasswordField();
+
+        JComboBox<String> rolComboBox = new JComboBox<>(new String[]{"Admin", "Reponedor", "Chef"});
 
         createFrame.add(new JLabel("Nombre:"));
         createFrame.add(nameField);
 
         createFrame.add(new JLabel("Rol:"));
-        createFrame.add(rolField);
+        createFrame.add(rolComboBox);
 
         createFrame.add(new JLabel("Correo:"));
         createFrame.add(emailField);
@@ -184,30 +166,41 @@ public class VistaAdmin extends JFrame {
         createFrame.add(new JLabel("Edad:"));
         createFrame.add(ageField);
 
-        createFrame.add(new JLabel("ID:"));
-        createFrame.add(idField);
-
         createFrame.add(new JLabel("Contraseña:"));
         createFrame.add(passwordField);
 
         JButton createButton = new JButton("Crear");
         createButton.addActionListener(e -> {
             try {
+                String nombre = nameField.getText();
+                String correo = emailField.getText();
                 int edad = Integer.parseInt(ageField.getText());
-                admin.crearUsuario(nameField.getText(), emailField.getText(), edad, idField.getText(), new String(passwordField.getPassword()),rolField.getText());
+                String contraseña = new String(passwordField.getPassword());
+                String rol = (String) rolComboBox.getSelectedItem();
+
+                if (nombre.isEmpty() || correo.isEmpty() || contraseña.isEmpty() || rol == null) {
+                    throw new IllegalArgumentException("Todos los campos son obligatorios.");
+                }
+
+                int id = controller.generarIdPorRol(rol);
+
+                admin.crearUsuario(nombre, correo, edad, String.valueOf(id), contraseña, rol);
+
                 createFrame.dispose();
-                loadUserData();
+                cargarDataUsuario();
+
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(createFrame, "Edad no válida.", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(createFrame, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+
+        createFrame.add(new JLabel());
         createFrame.add(createButton);
 
         createFrame.setVisible(true);
     }
-
     private int getSelectedRow() {
         for (int i = 0; i < userTable.getRowCount(); i++) {
             if ((boolean) userTable.getValueAt(i, 0)) {
@@ -215,11 +208,6 @@ public class VistaAdmin extends JFrame {
             }
         }
         return -1;
-    }
-
-    public static void main(String[] args) {
-        Admin admin = new Admin("Admin", "admin@admin.com", 30, "admin", "1234");
-        new VistaAdmin(admin);
     }
 }
 

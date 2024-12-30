@@ -9,6 +9,9 @@ public class Alimento {
     private String categoria;
     private int cantidad;
 
+    public Alimento() {
+    }
+
     public Alimento(String nombre, double precio, String categoria, int cantidad) {
         this.nombre = nombre;
         this.precio = precio;

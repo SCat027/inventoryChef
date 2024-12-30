@@ -19,14 +19,21 @@ public class Archivo {
     }
 
     public static List<Alimento> cargarAlimentos() {
+        ObjectMapper mapper = new ObjectMapper(); // Instancia del mapper
+        File archivo = new File("almacen.json");
         try {
+            if (!archivo.exists()) {
+                List<Usuario> usuariosIniciales = new ArrayList<>();
+                mapper.writeValue(archivo, usuariosIniciales);
+                System.out.println("El archivo 'almacen.json' no existía. Se creó con una lista inicial.");
+            }
             return mapper.readValue(
                     new File("almacen.json"),
                     mapper.getTypeFactory().constructCollectionType(List.class, Alimento.class)
             );
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage() + " al cargar la data de: almacen.json");
-            return null;
+            return new ArrayList<>();
         }
     }
 
