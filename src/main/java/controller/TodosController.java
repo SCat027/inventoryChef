@@ -6,7 +6,7 @@ import util.InicioSesion;
 import datos.Archivo;
 import java.util.List;
 
-public class TodosController {
+public class  TodosController {
     public Usuario validarInicio(String id, String contrasena) {
         InicioSesion inicioSesion = new InicioSesion();
         return  inicioSesion.autenticar(id,contrasena);
@@ -47,6 +47,16 @@ public class TodosController {
     }
     public List<Alimento> cargarAlmacen(){
         return Archivo.cargarAlimentos();
+    }
+    public Alimento buscarProductoPorNombre(String nombre) {
+        List<Alimento> almacen = cargarAlmacen();
+        if (almacen == null || almacen.isEmpty()) {
+            return null;
+        }
+        return almacen.stream()
+                .filter(a -> a.getNombre().equalsIgnoreCase(nombre))
+                .findFirst()
+                .orElse(null);
     }
 
 

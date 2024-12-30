@@ -1,207 +1,209 @@
 package gui.reponedor;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.List;
 import inventoryChef.Alimento;
 import inventoryChef.Reponedor;
 import controller.TodosController;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
 
 public class VistaReponedor extends JFrame {
-    private TodosController controller;
-    private Reponedor reponedor;
 
+    private Reponedor reponedor;
+    private JFrame mainFrame;
+    private JTable productTable;
+    private DefaultTableModel tableModel;
+    private TodosController controller;
 
     public VistaReponedor(Reponedor reponedor) {
-        this.controller = new TodosController();
         this.reponedor = reponedor;
-        initializeUI();
+        this.controller = new TodosController();
+        iniciar();
     }
 
-    private void initializeUI() {
-        JFrame frame = new JFrame("Gestión de Almacén - Reponedor");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-        frame.setLayout(new BorderLayout());
+    private void iniciar() {
+        mainFrame = new JFrame("Bienvenido Reponedor");
+        mainFrame.setSize(800, 600);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel sidePanel = new JPanel();
-        sidePanel.setLayout(new GridLayout(5, 1));
-        sidePanel.setPreferredSize(new Dimension(200, 600));
+        JPanel topPanel = new JPanel(new BorderLayout());
+        JLabel titleLabel = new JLabel("Gestión de Inventario", JLabel.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        topPanel.add(titleLabel, BorderLayout.CENTER);
 
-        JButton viewButton = new JButton("Consultar Almacén");
-        JButton addButton = new JButton("Añadir Producto");
-        JButton removeButton = new JButton("Eliminar Producto");
-        JButton editPriceButton = new JButton("Editar Precio");
-        JButton editQuantityButton = new JButton("Editar Cantidad");
-
-        sidePanel.add(viewButton);
-        sidePanel.add(addButton);
-        sidePanel.add(removeButton);
-        sidePanel.add(editPriceButton);
-        sidePanel.add(editQuantityButton);
-
-        frame.add(sidePanel, BorderLayout.WEST);
-
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        frame.add(mainPanel, BorderLayout.CENTER);
-
-        viewButton.addActionListener(e -> showAlmacen(mainPanel));
-
+        JButton addButton = new JButton("+");
+        addButton.setFont(new Font("Arial", Font.BOLD, 16));
         addButton.addActionListener(e -> openAddProductWindow());
+        topPanel.add(addButton, BorderLayout.EAST);
 
-        removeButton.addActionListener(e -> openRemoveProductWindow());
+        mainFrame.add(topPanel, BorderLayout.NORTH);
 
-        editPriceButton.addActionListener(e -> openEditPriceWindow());
-
-        editQuantityButton.addActionListener(e -> openEditQuantityWindow());
-
-        frame.setVisible(true);
-    }
-
-    private void showAlmacen(JPanel mainPanel) {
-        mainPanel.removeAll();
-
-        List<Alimento> almacen = controller.cargarAlmacen();
-        if (almacen == null || almacen.isEmpty()) {
-            mainPanel.add(new JLabel("No hay productos en el almacén."), BorderLayout.CENTER);
-        } else {
-            String[] columnNames = {"Nombre", "Precio", "Cantidad"};
-            Object[][] data = new Object[almacen.size()][3];
-            for (int i = 0; i < almacen.size(); i++) {
-                Alimento a = almacen.get(i);
-                data[i][0] = a.getNombre();
-                data[i][1] = "$" + a.getPrecio();
-                data[i][2] = a.getCantidad();
+        tableModel = new DefaultTableModel(new Object[]{"Seleccionar", "Nombre", "Cantidad", "Precio"}, 0);
+        productTable = new JTable(tableModel) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 0;
             }
 
-            JTable table = new JTable(data, columnNames);
-            JScrollPane scrollPane = new JScrollPane(table);
-            mainPanel.add(scrollPane, BorderLayout.CENTER);
-        }
+            @Override
+            public Class<?> getColumnClass(int column) {
+                return column == 0 ? Boolean.class : String.class;
+            }
+        };
+        JScrollPane tableScrollPane = new JScrollPane(productTable);
+        mainFrame.add(tableScrollPane, BorderLayout.CENTER);
 
-        mainPanel.revalidate();
-        mainPanel.repaint();
+        JButton viewDetailsButton = new JButton("Ver Detalles");
+        viewDetailsButton.addActionListener(e -> openProductDetailsWindow());
+        mainFrame.add(viewDetailsButton, BorderLayout.SOUTH);
+
+        cargarDataProductos();
+        mainFrame.setVisible(true);
     }
 
-    // Método para abrir la ventana de añadir producto
+    private void cargarDataProductos() {
+        List<Alimento> productos =controller.cargarAlmacen();
+        if (productos != null) {
+            tableModel.setRowCount(0);
+            for (Alimento producto : productos) {
+                tableModel.addRow(new Object[]{false, producto.getNombre(), producto.getCantidad(), producto.getPrecio()});
+            }
+        }
+    }
+
+    private void openProductDetailsWindow() {
+        int selectedRow = getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(mainFrame, "Seleccione un producto primero.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String productName = (String) tableModel.getValueAt(selectedRow, 1);
+        Alimento producto = controller.buscarProductoPorNombre(productName);
+        if (producto == null) {
+            JOptionPane.showMessageDialog(mainFrame, "Producto no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        JFrame detailsFrame = new JFrame("Detalles del Producto");
+        detailsFrame.setSize(400, 300);
+        detailsFrame.setLayout(new GridLayout(5, 2));
+
+        detailsFrame.add(new JLabel("Nombre:"));
+        detailsFrame.add(new JLabel(producto.getNombre()));
+
+        detailsFrame.add(new JLabel("Cantidad:"));
+        detailsFrame.add(new JLabel(String.valueOf(producto.getCantidad())));
+
+        detailsFrame.add(new JLabel("Precio:"));
+        detailsFrame.add(new JLabel(String.valueOf(producto.getPrecio())));
+
+        JButton editButton = new JButton("Editar");
+        editButton.addActionListener(e -> openEditProductWindow(producto));
+        detailsFrame.add(editButton);
+
+        JButton deleteButton = new JButton("Eliminar");
+        deleteButton.addActionListener(e -> {
+            reponedor.eliminarProducto(producto.getNombre());
+            detailsFrame.dispose();
+            cargarDataProductos();
+        });
+        detailsFrame.add(deleteButton);
+
+        detailsFrame.setVisible(true);
+    }
+
+    private void openEditProductWindow(Alimento producto) {
+        JFrame editFrame = new JFrame("Editar Producto");
+        editFrame.setSize(400, 300);
+        editFrame.setLayout(new GridLayout(4, 2));
+
+        JTextField quantityField = new JTextField(String.valueOf(producto.getCantidad()));
+        JTextField priceField = new JTextField(String.valueOf(producto.getPrecio()));
+
+        editFrame.add(new JLabel("Cantidad:"));
+        editFrame.add(quantityField);
+
+        editFrame.add(new JLabel("Precio:"));
+        editFrame.add(priceField);
+
+        JButton saveButton = new JButton("Guardar");
+        saveButton.addActionListener(e -> {
+            try {
+                int nuevaCantidad = Integer.parseInt(quantityField.getText());
+                double nuevoPrecio = Double.parseDouble(priceField.getText());
+                reponedor.editarProductoCantidad(producto.getNombre(), nuevaCantidad);
+                reponedor.editarProductoPrecio(producto.getNombre(), nuevoPrecio);
+                editFrame.dispose();
+                cargarDataProductos();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(editFrame, "Cantidad o precio no válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        editFrame.add(saveButton);
+
+        editFrame.setVisible(true);
+    }
+
     private void openAddProductWindow() {
-        JFrame addFrame = new JFrame("Añadir Producto");
+        JFrame addFrame = new JFrame("Agregar Producto");
         addFrame.setSize(400, 300);
         addFrame.setLayout(new GridLayout(4, 2));
 
         JTextField nameField = new JTextField();
         JTextField categoryField = new JTextField();
-        JTextField priceField = new JTextField();
         JTextField quantityField = new JTextField();
+        JTextField priceField = new JTextField();
 
         addFrame.add(new JLabel("Nombre:"));
         addFrame.add(nameField);
+
         addFrame.add(new JLabel("Categoria:"));
         addFrame.add(categoryField);
-        addFrame.add(new JLabel("Precio:"));
-        addFrame.add(priceField);
+
         addFrame.add(new JLabel("Cantidad:"));
         addFrame.add(quantityField);
 
-        JButton addButton = new JButton("Añadir");
+        addFrame.add(new JLabel("Precio:"));
+        addFrame.add(priceField);
+
+        JButton addButton = new JButton("Agregar");
         addButton.addActionListener(e -> {
             try {
                 String nombre = nameField.getText();
                 String categoria = categoryField.getText();
-                double precio = Double.parseDouble(priceField.getText());
                 int cantidad = Integer.parseInt(quantityField.getText());
-                String message = reponedor.añadirProducto(new Alimento(nombre, precio, categoria, cantidad));
-                JOptionPane.showMessageDialog(addFrame, message);
+                double precio = Double.parseDouble(priceField.getText());
+
+                if (nombre.isEmpty()) {
+                    throw new IllegalArgumentException("El nombre es obligatorio.");
+                }
+                reponedor.añadirProducto(new Alimento(nombre, precio, categoria, cantidad));
                 addFrame.dispose();
+                cargarDataProductos();
+
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(addFrame, "Precio o cantidad inválidos.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(addFrame, "Cantidad o precio no válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(addFrame, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+
+        addFrame.add(new JLabel());
         addFrame.add(addButton);
+
         addFrame.setVisible(true);
     }
 
-    private void openRemoveProductWindow() {
-        JFrame removeFrame = new JFrame("Eliminar Producto");
-        removeFrame.setSize(400, 200);
-        removeFrame.setLayout(new GridLayout(2, 2));
-
-        JTextField nameField = new JTextField();
-        removeFrame.add(new JLabel("Nombre del Producto:"));
-        removeFrame.add(nameField);
-
-        JButton removeButton = new JButton("Eliminar");
-        removeButton.addActionListener(e -> {
-            boolean success = reponedor.eliminarProducto(nameField.getText());
-            JOptionPane.showMessageDialog(removeFrame,
-                    success ? "Producto eliminado correctamente." : "No se pudo eliminar el producto.");
-            removeFrame.dispose();
-        });
-
-        removeFrame.add(removeButton);
-        removeFrame.setVisible(true);
-    }
-
-    // Método para abrir la ventana de editar precio
-    private void openEditPriceWindow() {
-        JFrame editFrame = new JFrame("Editar Precio");
-        editFrame.setSize(400, 200);
-        editFrame.setLayout(new GridLayout(3, 2));
-
-        JTextField nameField = new JTextField();
-        JTextField priceField = new JTextField();
-
-        editFrame.add(new JLabel("Nombre del Producto:"));
-        editFrame.add(nameField);
-        editFrame.add(new JLabel("Nuevo Precio:"));
-        editFrame.add(priceField);
-
-        JButton editButton = new JButton("Editar");
-        editButton.addActionListener(e -> {
-            try {
-                String nombre = nameField.getText();
-                double nuevoPrecio = Double.parseDouble(priceField.getText());
-                boolean success = reponedor.editarProductoPrecio(nombre, nuevoPrecio);
-                JOptionPane.showMessageDialog(editFrame,
-                        success ? "Precio editado correctamente." : "No se pudo editar el precio.");
-                editFrame.dispose();
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(editFrame, "Precio inválido.", "Error", JOptionPane.ERROR_MESSAGE);
+    private int getSelectedRow() {
+        for (int i = 0; i < productTable.getRowCount(); i++) {
+            if ((boolean) productTable.getValueAt(i, 0)) {
+                return i;
             }
-        });
-
-        editFrame.add(editButton);
-        editFrame.setVisible(true);
-    }
-    private void openEditQuantityWindow() {
-        JFrame editFrame = new JFrame("Editar Cantidad");
-        editFrame.setSize(400, 200);
-        editFrame.setLayout(new GridLayout(3, 2));
-
-        JTextField nameField = new JTextField();
-        JTextField quantityField = new JTextField();
-
-        editFrame.add(new JLabel("Nombre del Producto:"));
-        editFrame.add(nameField);
-        editFrame.add(new JLabel("Nueva Cantidad:"));
-        editFrame.add(quantityField);
-
-        JButton editButton = new JButton("Editar");
-        editButton.addActionListener(e -> {
-            try {
-                String nombre = nameField.getText();
-                int nuevaCantidad = Integer.parseInt(quantityField.getText());
-                boolean success = reponedor.editarProductoCantidad(nombre, nuevaCantidad);
-                JOptionPane.showMessageDialog(editFrame,
-                        success ? "Cantidad editada correctamente." : "No se pudo editar la cantidad.");
-                editFrame.dispose();
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(editFrame, "Cantidad inválida.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-        editFrame.add(editButton);
-        editFrame.setVisible(true);
+        }
+        return -1;
     }
 }
+
 
