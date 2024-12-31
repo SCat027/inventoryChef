@@ -1,6 +1,7 @@
 package controller;
 
 import inventoryChef.Alimento;
+import inventoryChef.Receta;
 import inventoryChef.Usuario;
 import util.InicioSesion;
 import datos.Archivo;
@@ -57,6 +58,9 @@ public class  TodosController {
                 .filter(a -> a.getNombre().equalsIgnoreCase(nombre))
                 .findFirst()
                 .orElse(null);
+    }
+    public List<Receta> cargarRecetas(){
+        return Archivo.cargarRecetas();
     }
 
 

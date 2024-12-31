@@ -4,6 +4,9 @@ public class Ingrediente {
     private Alimento alimento;
     private int cantidad;
 
+    public Ingrediente() {
+    }
+
     public Ingrediente(Alimento alimento, int cantidad) {
         this.alimento = alimento;
         this.cantidad = cantidad;

@@ -7,6 +7,8 @@ public class Receta {
     private List<Ingrediente> ingredientes;
     private String instrucciones;
 
+    public Receta() {
+    }
     public Receta(String nombre, List<Ingrediente> ingredientes, String instrucciones) {
         this.nombre = nombre;
         this.ingredientes = ingredientes;

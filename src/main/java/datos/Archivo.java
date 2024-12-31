@@ -77,7 +77,14 @@ public class Archivo {
     }
 
     public static List<Receta> cargarRecetas() {
+        ObjectMapper mapper = new ObjectMapper();
+        File archivo = new File("recetas.json");
         try {
+            if (!archivo.exists()) {
+                List<Receta> recetas = new ArrayList<>();
+                mapper.writeValue(archivo, recetas);
+                System.out.println("El archivo 'recetas.json' no existía. Se creó con una lista inicial.");
+            }
             return mapper.readValue(new File("recetas.json"),
                     mapper.getTypeFactory().constructCollectionType(List.class, Receta.class));
         } catch (Exception e) {
