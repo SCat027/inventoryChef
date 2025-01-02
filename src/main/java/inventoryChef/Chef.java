@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Chef extends Usuario {
 
-    public Chef(String nombre, String correo, int edad, String id, String contrasena) { super(nombre, correo, edad, id, contrasena); }
+    public Chef(String nombre, String correo, int edad, String clave, int id) {super(nombre, correo, edad , clave, id);super.rol = "Chef";}
 
     public void consultarRecetas() {
         List<Receta> recetas = cargarRecetas();

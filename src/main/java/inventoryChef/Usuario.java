@@ -1,26 +1,55 @@
 package inventoryChef;
 
 public class Usuario {
+
+    private int id;
+    protected String rol;
     private String nombre;
     private String correo;
     private int edad;
-    private String id;
-    private String contrasena;
 
-    public Usuario(String nombre, String correo, int edad, String id, String contrasena) {
+    private String clave;
+
+    public Usuario(String nombre, String correo, int edad, String clave, int id) {
         this.nombre = nombre;
         this.correo = correo;
-        this.edad = edad;
         this.id = id;
-        this.contrasena = contrasena;
+        this.edad = edad;
+        this.clave = clave;
+        this.rol = "Usuario";
     }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+  
+    public String getRol() { return rol; }
 
     public String getNombre() {
         return nombre;
     }
 
+    public String getCorreo() {
+        return correo;
+    }
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public int getEdad() {
+        return edad;
     }
 
     public void setEdad(int edad) {

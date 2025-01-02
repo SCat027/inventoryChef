@@ -5,8 +5,9 @@ import java.util.List;
 
 public class Admin extends Usuario {
 
-    public Admin(String nombre, String correo, int edad, String id, String contrasena) {
-        super(nombre, correo, edad, id, contrasena);
+    public Admin(String nombre, String correo, int edad, String clave, int id) {
+        super(nombre, correo, edad , clave, id);
+        super.rol = "Admin";
     }
 
     public void consultarUsuarios() {
