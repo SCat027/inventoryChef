@@ -81,8 +81,6 @@ public class Chef extends Usuario {
         if (receta == null || !hayIngredientesSuficientes(receta, almacen)) {
             throw new IllegalArgumentException("No es posible elaborar la receta \"" + nombreReceta + "\"."); }
 
-        //Aca esta el ciclo que hace que se descuenten la cantidad de elementos dependiendo de la cantidad necesaria en ingrediente
-        //Cantidad alimento - cantidad ingrediente = cantidad final alimento
         receta.getIngredientes().forEach(ingrediente -> {
             Alimento alimento = buscarAlimento(almacen, ingrediente.getAlimento().getNombre());
             if (alimento != null) {

@@ -2,6 +2,7 @@ package gui.inicioSesion;
 
 import controller.TodosController;
 import gui.admin.VistaAdmin;
+import gui.chef.PruebaVistaChef;
 import gui.chef.VistaChef;
 import gui.reponedor.VistaReponedor;
 import inventoryChef.Admin;
@@ -93,7 +94,7 @@ public class InicioSesionVista extends JFrame {
                 if (controller.autenticarRol(controller.validarInicio(username, password)).equals("Chef")) {
                     JOptionPane.showMessageDialog(InicioSesionVista.this, "Inicio de sesión exitoso");
                     SwingUtilities.invokeLater(() -> {
-                        VistaChef inventarioChef = new VistaChef((Chef) controller.validarInicio(username, password));
+                        PruebaVistaChef inventarioChef = new PruebaVistaChef((Chef) controller.validarInicio(username, password));
                         inventarioChef.setVisible(true);
                     });
                     dispose();

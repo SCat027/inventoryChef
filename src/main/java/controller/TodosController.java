@@ -62,6 +62,14 @@ public class  TodosController {
     public List<Receta> cargarRecetas(){
         return Archivo.cargarRecetas();
     }
+    public Receta buscarRecetaPorNombre(String nombre) {
+        List<Receta> recetas = cargarRecetas();
+        return recetas.stream()
+                .filter(r -> r.getNombre().equalsIgnoreCase(nombre))
+                .findFirst()
+                .orElse(null);
+    }
+
 
 
 }
