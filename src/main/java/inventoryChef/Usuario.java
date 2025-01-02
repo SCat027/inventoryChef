@@ -7,6 +7,7 @@ public class Usuario {
     private String nombre;
     private String correo;
     private int edad;
+
     private String clave;
 
     public Usuario(String nombre, String correo, int edad, String clave, int id) {
@@ -33,6 +34,7 @@ public class Usuario {
     public void setClave(String clave) {
         this.clave = clave;
     }
+  
     public String getRol() { return rol; }
 
     public String getNombre() {
@@ -52,6 +54,14 @@ public class Usuario {
 
     public void setEdad(int edad) {
         this.edad = edad;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getContrasena() {
+        return contrasena;
     }
 
     public void consultarInformacion() {

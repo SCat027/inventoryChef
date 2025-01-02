@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Receta {
     private String nombre;
-    private List<Ingrediente> ingredientes; // Lista de ingredientes con cantidades
+    private List<Ingrediente> ingredientes;
     private String instrucciones;
 
     public Receta(String nombre, List<Ingrediente> ingredientes, String instrucciones) {

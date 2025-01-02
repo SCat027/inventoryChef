@@ -9,72 +9,62 @@ public class Reponedor extends Usuario {
 
     public void consultarAlmacen() {
         List<Alimento> almacen = cargarAlmacen();
-        if (almacen != null && !almacen.isEmpty()) {
-            System.out.println("Productos en almacén:");
-            almacen.forEach(a -> System.out.println(a.getNombre() + " - $" + a.getPrecio()));
-        } else {
+        if (almacen == null || almacen.isEmpty()) {
             System.out.println("No hay productos en el almacén.");
-        }
-    }
+            return; }
+        System.out.println("Productos en almacén:");
+        almacen.forEach(a -> System.out.println(a.getNombre() + " - $" + a.getPrecio())); }
 
-    public boolean añadirProducto(Alimento producto) {
+
+
+    public String añadirProducto(Alimento producto) {
         List<Alimento> almacen = cargarAlmacen();
-        if (productoExiste(almacen, producto.getNombre())) {
-            System.out.println("El producto \"" + producto.getNombre() + "\" ya existe.");
-            return false;
-        }
+        if (almacen == null) return "No se pudo cargar el almacén.";
+        if (productoExiste(almacen, producto.getNombre())) return "El producto ya existe.";
         almacen.add(producto);
         guardarAlmacen(almacen);
-        System.out.println("Producto \"" + producto.getNombre() + "\" añadido correctamente.");
-        return true;
-    }
+        return "Producto añadido correctamente.";}
+
+
 
     public boolean eliminarProducto(String nombreProducto) {
         List<Alimento> almacen = cargarAlmacen();
-        if (almacen == null || almacen.isEmpty()) {
-            System.out.println("No hay productos para eliminar.");
-            return false;
-        }
-
-        boolean productoEliminado = almacen.removeIf(a -> a.getNombre().equalsIgnoreCase(nombreProducto));
-        if (productoEliminado) {
-            guardarAlmacen(almacen);
-            System.out.println("Producto \"" + nombreProducto + "\" eliminado correctamente.");
-            return true;
-        } else {
+        if (almacen == null || almacen.isEmpty()) throw new IllegalStateException("No hay productos para eliminar.");
+        if (!almacen.removeIf(a -> a.getNombre().equalsIgnoreCase(nombreProducto))) {
             System.out.println("El producto \"" + nombreProducto + "\" no existe.");
-            return false;
-        }
-    }
+            return false; }
+        guardarAlmacen(almacen);
+        System.out.println("Producto \"" + nombreProducto + "\" eliminado correctamente.");
+        return true; }
+
+
 
     public boolean editarProductoPrecio(String nombre, double nuevoPrecio) {
         List<Alimento> almacen = cargarAlmacen();
+        if (almacen == null) throw new IllegalStateException("No se pudo cargar el almacén.");
         Alimento producto = buscarProducto(almacen, nombre);
-
-        if (producto != null) {
-            producto.setPrecio(nuevoPrecio);
-            guardarAlmacen(almacen);
-            System.out.println("Precio del producto \"" + nombre + "\" editado correctamente a $" + nuevoPrecio);
-            return true;
-        } else {
+        if (producto == null) {
             System.out.println("El producto \"" + nombre + "\" no existe.");
             return false;
         }
+        producto.setPrecio(nuevoPrecio);
+        guardarAlmacen(almacen);
+        System.out.println("Precio del producto \"" + nombre + "\" editado correctamente a $" + nuevoPrecio);
+        return true;
     }
 
     public boolean editarProductoCantidad(String nombre, int nuevaCantidad) {
         List<Alimento> almacen = cargarAlmacen();
+        if (almacen == null) throw new IllegalStateException("No se pudo cargar el almacén.");
         Alimento producto = buscarProducto(almacen, nombre);
-
-        if (producto != null) {
-            producto.setCantidad(nuevaCantidad);
-            guardarAlmacen(almacen);
-            System.out.println("Cantidad del producto \"" + nombre + "\" editada correctamente a " + nuevaCantidad);
-            return true;
-        } else {
+        if (producto == null) {
             System.out.println("El producto \"" + nombre + "\" no existe.");
             return false;
         }
+        producto.setCantidad(nuevaCantidad);
+        guardarAlmacen(almacen);
+        System.out.println("Cantidad del producto \"" + nombre + "\" editada correctamente a " + nuevaCantidad);
+        return true;
     }
 
     // ---------------- Métodos Auxiliares ----------------
