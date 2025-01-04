@@ -9,6 +9,7 @@ public class Receta {
 
     public Receta() {
     }
+
     public Receta(String nombre, List<Ingrediente> ingredientes, String instrucciones) {
         this.nombre = nombre;
         this.ingredientes = ingredientes;
