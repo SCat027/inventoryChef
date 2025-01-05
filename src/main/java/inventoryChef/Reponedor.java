@@ -31,7 +31,7 @@ public class Reponedor extends Usuario {
 
 
 
-    public boolean eliminarProducto(String nombreProducto) {
+    public static boolean eliminarProducto(String nombreProducto) {
         List<Alimento> almacen = cargarAlmacen();
         if (almacen == null || almacen.isEmpty()) throw new IllegalStateException("No hay productos para eliminar.");
         if (!almacen.removeIf(a -> a.getNombre().equalsIgnoreCase(nombreProducto))) {
@@ -73,11 +73,11 @@ public class Reponedor extends Usuario {
 
     // ---------------- Métodos Auxiliares ----------------
 
-    private List<Alimento> cargarAlmacen() {
+    private static List<Alimento> cargarAlmacen() {
         return Archivo.cargarAlimentos();
     }
 
-    private void guardarAlmacen(List<Alimento> almacen) {
+    private static void guardarAlmacen(List<Alimento> almacen) {
         Archivo.guardarAlimentos(almacen);
     }
 
