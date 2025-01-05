@@ -208,6 +208,9 @@ public class InventoryChefTest {
         assertEquals(3, alimentosCargados.size(), "El número de productos en el almacén debería seguir siendo 3");
     }
 
+    // Se prueban los metodos de:
+    // - reponedor.añadirProducto()
+    // - reponedor.eliminarProducto()
     @Test
     void testEliminarProductoDeAlmacenVacio() {
         // Eliminar todos los productos para dejar el almacén vacío

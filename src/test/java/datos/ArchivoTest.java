@@ -65,9 +65,7 @@ class ArchivoTest {
         // Añadir usuarios
         usuarios = new ArrayList<>();
         usuarios.add(new Usuario("Juan Pérez", "juan@example.com", 30, "U123", "password1"));
-        usuarios.add(new Usuario("Ana López", "ana@example.com", 25, "U124", "password2"));
-    }
-
+        usuarios.add(new Usuario("Ana López", "ana@example.com", 25, "U124", "password2")); }
 
 
     // Se ejecuta DESPUES de cada prueba para limpiar y generar el archivo usuarios.json
@@ -81,51 +79,39 @@ class ArchivoTest {
         //Esto para que el programa pueda iniciar con normalidad
         try (FileWriter writer = new FileWriter("usuarios.json")) {
             writer.write(USUARIOS_JSON);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+        } catch (IOException e) { e.printStackTrace(); } }
+
 
     // Se crea el "almacen.json" y se revisa que el archivo tenga una cantidad de datos guardados dentro mayor a 0
     @Test
     void guardarAlimentos() {
-        // Guarda la lista de alimentos en el archivo JSON usando el metodo de la clase Archivo
+        // Guarda la lista de alimentos en el archivo json
         Archivo.guardarAlimentos(alimentos);
-
-        // Crea una referencia al archivo "almacen.json"
         File archivo = new File("almacen.json");
 
-        // Verifica que el archivo "almacen.json" exista
+        // Verifica que el archivo exista
         assertTrue(archivo.exists());
 
         // Verifica que el archivo "almacen.json" no esté vacío (su longitud es mayor a 0)
-        assertTrue(archivo.length() > 0);
-    }
+        assertTrue(archivo.length() > 0); }
 
 
 
     // Prueba para verificar que los alimentos se cargan correctamente desde el archivo "almacen.json"
     @Test
     void cargarAlimentos() {
-        // Guarda la lista de alimentos en el archivo JSON usando el metodo de la clase Archivo
         Archivo.guardarAlimentos(alimentos);
-
-        // Carga los alimentos desde el archivo JSON
         List<Alimento> alimentosCargados = Archivo.cargarAlimentos();
 
-        // Verifica que la lista cargada no sea nula (es decir, que se haya cargado correctamente)
+        // Verifica que la lista cargada no sea nula
         assertNotNull(alimentosCargados);
 
         // Verifica que el tamaño de la lista cargada sea 2, lo que indica que se cargaron los dos alimentos
         assertEquals(2, alimentosCargados.size());
 
-        // Verifica que el primer alimento cargado tenga el nombre "Manzana"
+        //Verifica los datos que se guardaron en el archivo (el alimento 1)
         assertEquals("Manzana", alimentosCargados.get(0).getNombre());
-
-        // Verifica que el precio del primer alimento cargado sea 1.5
         assertEquals(1.5, alimentosCargados.get(0).getPrecio());
-
-        // Verifica que la cantidad del primer alimento cargado sea 50
         assertEquals(50, alimentosCargados.get(0).getCantidad());
     }
 
@@ -133,16 +119,14 @@ class ArchivoTest {
     // Prueba para verificar que los usuarios se guardan correctamente en el archivo "usuarios.json"
     @Test
     void guardarUsuarios() {
-        // Guarda la lista de usuarios en el archivo JSON usando el metodo de la clase Archivo
+        // Guarda la lista de usuarios en el archivo
         Archivo.guardarUsuarios(usuarios);
-
-        // Crea un objeto File para acceder al archivo "usuarios.json"
         File archivo = new File("usuarios.json");
 
-        // Verifica que el archivo "usuarios.json" existe después de guardar los usuarios
+        // Verifica que el archivo "usuarios.json" existe
         assertTrue(archivo.exists());
 
-        // Verifica que el archivo "usuarios.json" tiene una longitud mayor a 0, lo que indica que contiene datos
+        // Verifica que el archivo "usuarios.json" tiene una longitud mayor a 0
         assertTrue(archivo.length() > 0);
     }
 
@@ -184,25 +168,20 @@ class ArchivoTest {
     void guardarRecetas() {
         // Guarda la lista de recetas en el archivo JSON usando el metodo de la clase Archivo
         Archivo.guardarRecetas(recetas);
-
-        // Crea una referencia al archivo "recetas.json"
         File archivo = new File("recetas.json");
 
         // Verifica que el archivo exista
         assertTrue(archivo.exists());
 
         // Verifica que el archivo no esté vacío (su longitud es mayor a 0)
-        assertTrue(archivo.length() > 0);
-    }
+        assertTrue(archivo.length() > 0); }
 
 
-    // Prueba para cargar las recetas desde un archivo JSON
+    // Prueba para cargar las recetas desde un archivo json
     @Test
     void cargarRecetas() {
-        // Guarda las recetas en el archivo JSON usando el metodo de la clase Archivo
+        // Guarda las recetas en el archivo
         Archivo.guardarRecetas(recetas);
-
-        // Carga las recetas desde el archivo JSON
         List<Receta> recetasCargadas = Archivo.cargarRecetas();
 
         // Verifica que la lista cargada no sea nula
@@ -221,6 +200,6 @@ class ArchivoTest {
         Receta receta2 = recetasCargadas.get(1);
         assertEquals("Sopa", receta2.getNombre());
         assertEquals(2, receta2.getIngredientes().size());
-        assertEquals("Hierve el agua y lito", receta2.getInstrucciones());
-    }
+        assertEquals("Hierve el agua y lito", receta2.getInstrucciones()); }
+
 }
