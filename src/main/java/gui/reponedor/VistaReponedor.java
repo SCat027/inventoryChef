@@ -1,3 +1,8 @@
+/**
+ * Clase VistaReponedor.
+ * Representa la interfaz gráfica para un usuario reponedor que gestiona el inventario de productos.
+ * Permite visualizar, agregar, editar y eliminar productos del inventario.
+ */
 package gui.reponedor;
 
 import inventoryChef.Alimento;
@@ -10,23 +15,51 @@ import java.util.List;
 
 public class VistaReponedor extends JFrame {
 
+    /**
+     * Instancia del usuario reponedor asociado a la vista.
+     */
     private Reponedor reponedor;
+
+    /**
+     * Marco principal de la ventana.
+     */
     private JFrame mainFrame;
+
+    /**
+     * Tabla para visualizar los productos.
+     */
     private JTable productTable;
+
+    /**
+     * Modelo de datos para la tabla de productos.
+     */
     private DefaultTableModel tableModel;
+
+    /**
+     * Controlador para gestionar las operaciones del inventario.
+     */
     private TodosController controller;
 
+    /**
+     * Constructor de la clase VistaReponedor.
+     *
+     * @param reponedor Instancia del reponedor que utiliza esta vista.
+     */
     public VistaReponedor(Reponedor reponedor) {
         this.reponedor = reponedor;
         this.controller = new TodosController();
         iniciar();
     }
 
+    /**
+     * Inicializa los componentes de la interfaz gráfica.
+     */
     private void iniciar() {
         mainFrame = new JFrame("Bienvenido Reponedor");
         mainFrame.setSize(800, 600);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // Panel superior con título y botón para agregar productos.
         JPanel topPanel = new JPanel(new BorderLayout());
         JLabel titleLabel = new JLabel("Gestión de Inventario", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
@@ -39,6 +72,7 @@ public class VistaReponedor extends JFrame {
 
         mainFrame.add(topPanel, BorderLayout.NORTH);
 
+        // Configuración de la tabla de productos.
         tableModel = new DefaultTableModel(new Object[]{"Seleccionar", "Nombre", "Cantidad", "Precio"}, 0);
         productTable = new JTable(tableModel) {
             @Override
@@ -62,8 +96,11 @@ public class VistaReponedor extends JFrame {
         mainFrame.setVisible(true);
     }
 
+    /**
+     * Carga los datos de los productos desde el controlador a la tabla.
+     */
     private void cargarDataProductos() {
-        List<Alimento> productos =controller.cargarAlmacen();
+        List<Alimento> productos = controller.cargarAlmacen();
         if (productos != null) {
             tableModel.setRowCount(0);
             for (Alimento producto : productos) {
@@ -72,6 +109,9 @@ public class VistaReponedor extends JFrame {
         }
     }
 
+    /**
+     * Abre una ventana para mostrar los detalles de un producto seleccionado.
+     */
     private void openProductDetailsWindow() {
         int selectedRow = getSelectedRow();
         if (selectedRow == -1) {
@@ -114,6 +154,11 @@ public class VistaReponedor extends JFrame {
         detailsFrame.setVisible(true);
     }
 
+    /**
+     * Abre una ventana para editar un producto seleccionado.
+     *
+     * @param producto Producto a editar.
+     */
     private void openEditProductWindow(Alimento producto) {
         JFrame editFrame = new JFrame("Editar Producto");
         editFrame.setSize(400, 300);
@@ -146,6 +191,9 @@ public class VistaReponedor extends JFrame {
         editFrame.setVisible(true);
     }
 
+    /**
+     * Abre una ventana para agregar un nuevo producto al inventario.
+     */
     private void openAddProductWindow() {
         JFrame addFrame = new JFrame("Agregar Producto");
         addFrame.setSize(400, 300);
@@ -196,6 +244,11 @@ public class VistaReponedor extends JFrame {
         addFrame.setVisible(true);
     }
 
+    /**
+     * Obtiene el índice de la fila seleccionada en la tabla.
+     *
+     * @return Índice de la fila seleccionada o -1 si no hay ninguna seleccionada.
+     */
     private int getSelectedRow() {
         for (int i = 0; i < productTable.getRowCount(); i++) {
             if ((boolean) productTable.getValueAt(i, 0)) {
@@ -205,5 +258,3 @@ public class VistaReponedor extends JFrame {
         return -1;
     }
 }
-
-

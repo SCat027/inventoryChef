@@ -13,17 +13,25 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Clase de prueba unitaria para la clase Archivo.
+ * Esta clase se encarga de probar los métodos de lectura y escritura de archivos JSON
+ * que gestionan la información de alimentos, recetas y usuarios.
+ */
 class ArchivoTest {
+
     // Alimentos que se guardarán en el JSON "almacen.json"
     private Alimento lechuga, tomate, agua, sal, manzana, pan;
+
     // Ingredientes para las recetas
     private Ingrediente IngredienteLechuga, IngredienteTomate, ingredienteAwa, ingrediente4;
+
     // Listas de datos
     private List<Receta> recetas;
     private List<Alimento> alimentos;
     private List<Usuario> usuarios;
 
-    // Los datos predeterminados de usuarios, esto se hace para poder modificar los archivos a gusto durante las pruebas
+    // Datos predeterminados de usuarios, para poder modificar los archivos durante las pruebas
     private static String USUARIOS_JSON = """
     [
         {"nombre":"Eduardo","correo":"eduardo@gmail.com","edad":21,"id":"1001","contrasena":"eduardocrack12","rol":"Admin"},
@@ -33,9 +41,10 @@ class ArchivoTest {
     ]
     """;
 
-
-
-    // Se ejecuta ANTES de cada prueba para preparar los datos
+    /**
+     * Metodo que se ejecuta antes de cada prueba para preparar los datos.
+     * Inicializa los objetos de tipo Alimento, Ingrediente, Receta y Usuario.
+     */
     @BeforeEach
     void setUp() {
         // Crear los objetos de tipo "Alimento"
@@ -65,10 +74,13 @@ class ArchivoTest {
         // Añadir usuarios
         usuarios = new ArrayList<>();
         usuarios.add(new Usuario("Juan Pérez", "juan@example.com", 30, "U123", "password1"));
-        usuarios.add(new Usuario("Ana López", "ana@example.com", 25, "U124", "password2")); }
+        usuarios.add(new Usuario("Ana López", "ana@example.com", 25, "U124", "password2"));
+    }
 
-
-    // Se ejecuta DESPUES de cada prueba para limpiar y generar el archivo usuarios.json
+    /**
+     * Metodo que se ejecuta después de cada prueba para limpiar y restaurar los archivos necesarios.
+     * Elimina los archivos generados durante las pruebas y genera el archivo 'usuarios.json' con datos predeterminados.
+     */
     @AfterEach
     void limpiarArchivos() {
         // Eliminar archivos generados durante la prueba
@@ -76,13 +88,17 @@ class ArchivoTest {
         new File("recetas.json").delete();
 
         // Se crea el archivo usuarios.json con los datos predefinidos
-        //Esto para que el programa pueda iniciar con normalidad
         try (FileWriter writer = new FileWriter("usuarios.json")) {
             writer.write(USUARIOS_JSON);
-        } catch (IOException e) { e.printStackTrace(); } }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-
-    // Se crea el "almacen.json" y se revisa que el archivo tenga una cantidad de datos guardados dentro mayor a 0
+    /**
+     * Prueba para verificar que los alimentos se guardan correctamente en el archivo "almacen.json".
+     * Guarda una lista de alimentos y luego verifica que el archivo exista y no esté vacío.
+     */
     @Test
     void guardarAlimentos() {
         // Guarda la lista de alimentos en el archivo json
@@ -93,11 +109,13 @@ class ArchivoTest {
         assertTrue(archivo.exists());
 
         // Verifica que el archivo "almacen.json" no esté vacío (su longitud es mayor a 0)
-        assertTrue(archivo.length() > 0); }
+        assertTrue(archivo.length() > 0);
+    }
 
-
-
-    // Prueba para verificar que los alimentos se cargan correctamente desde el archivo "almacen.json"
+    /**
+     * Prueba para verificar que los alimentos se cargan correctamente desde el archivo "almacen.json".
+     * Carga los alimentos desde el archivo y comprueba que los datos leídos sean correctos.
+     */
     @Test
     void cargarAlimentos() {
         Archivo.guardarAlimentos(alimentos);
@@ -109,14 +127,16 @@ class ArchivoTest {
         // Verifica que el tamaño de la lista cargada sea 2, lo que indica que se cargaron los dos alimentos
         assertEquals(2, alimentosCargados.size());
 
-        //Verifica los datos que se guardaron en el archivo (el alimento 1)
+        // Verifica los datos que se guardaron en el archivo (el alimento 1)
         assertEquals("Manzana", alimentosCargados.get(0).getNombre());
         assertEquals(1.5, alimentosCargados.get(0).getPrecio());
         assertEquals(50, alimentosCargados.get(0).getCantidad());
     }
 
-
-    // Prueba para verificar que los usuarios se guardan correctamente en el archivo "usuarios.json"
+    /**
+     * Prueba para verificar que los usuarios se guardan correctamente en el archivo "usuarios.json".
+     * Guarda la lista de usuarios y luego verifica que el archivo exista y no esté vacío.
+     */
     @Test
     void guardarUsuarios() {
         // Guarda la lista de usuarios en el archivo
@@ -130,8 +150,10 @@ class ArchivoTest {
         assertTrue(archivo.length() > 0);
     }
 
-
-    // Prueba para cargar los usuarios desde un archivo JSON
+    /**
+     * Prueba para cargar los usuarios desde un archivo JSON.
+     * Guarda los usuarios en un archivo y luego los carga para verificar que los datos sean correctos.
+     */
     @Test
     void cargarUsuarios() {
         // Guarda los usuarios en el archivo JSON usando el metodo de la clase Archivo
@@ -163,7 +185,10 @@ class ArchivoTest {
         assertEquals("password2", usuario2.getContrasena());
     }
 
-    // Prueba para verificar que las recetas se guardan correctamente en el archivo "recetas.json"
+    /**
+     * Prueba para verificar que las recetas se guardan correctamente en el archivo "recetas.json".
+     * Guarda una lista de recetas y luego verifica que el archivo exista y no esté vacío.
+     */
     @Test
     void guardarRecetas() {
         // Guarda la lista de recetas en el archivo JSON usando el metodo de la clase Archivo
@@ -174,10 +199,13 @@ class ArchivoTest {
         assertTrue(archivo.exists());
 
         // Verifica que el archivo no esté vacío (su longitud es mayor a 0)
-        assertTrue(archivo.length() > 0); }
+        assertTrue(archivo.length() > 0);
+    }
 
-
-    // Prueba para cargar las recetas desde un archivo json
+    /**
+     * Prueba para cargar las recetas desde un archivo JSON.
+     * Guarda las recetas en un archivo y luego las carga para verificar que los datos sean correctos.
+     */
     @Test
     void cargarRecetas() {
         // Guarda las recetas en el archivo
@@ -200,6 +228,6 @@ class ArchivoTest {
         Receta receta2 = recetasCargadas.get(1);
         assertEquals("Sopa", receta2.getNombre());
         assertEquals(2, receta2.getIngredientes().size());
-        assertEquals("Hierve el agua y lito", receta2.getInstrucciones()); }
-
+        assertEquals("Hierve el agua y lito", receta2.getInstrucciones());
+    }
 }

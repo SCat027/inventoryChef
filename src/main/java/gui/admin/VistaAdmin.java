@@ -8,7 +8,10 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-
+/**
+ * VistaAdmin es una clase que proporciona una interfaz gráfica para que un administrador pueda gestionar usuarios,
+ * ver detalles, editar, eliminar y crear nuevos usuarios.
+ */
 public class VistaAdmin extends JFrame {
 
     private Admin admin;
@@ -17,11 +20,20 @@ public class VistaAdmin extends JFrame {
     private DefaultTableModel tableModel;
     private TodosController controller;
 
+    /**
+     * Constructor de VistaAdmin.
+     * Inicializa la vista principal para el administrador.
+     * @param admin Instancia de la clase Admin que contiene las operaciones del administrador.
+     */
     public VistaAdmin(Admin admin) {
         this.admin = admin;
         this.controller = new TodosController();
         iniciar();
     }
+
+    /**
+     * Configura e inicializa los componentes gráficos de la ventana principal.
+     */
     private void iniciar() {
         mainFrame = new JFrame("Bienvenido Admin");
         mainFrame.setSize(800, 600);
@@ -45,6 +57,7 @@ public class VistaAdmin extends JFrame {
             public boolean isCellEditable(int row, int column) {
                 return column == 0;
             }
+
             @Override
             public Class<?> getColumnClass(int column) {
                 return column == 0 ? Boolean.class : String.class;
@@ -60,6 +73,10 @@ public class VistaAdmin extends JFrame {
         cargarDataUsuario();
         mainFrame.setVisible(true);
     }
+
+    /**
+     * Carga la lista de usuarios en la tabla desde el administrador.
+     */
     private void cargarDataUsuario() {
         List<Usuario> usuarios = admin.cargarUsuarios();
         if (usuarios != null) {
@@ -69,6 +86,10 @@ public class VistaAdmin extends JFrame {
             }
         }
     }
+
+    /**
+     * Abre una ventana con los detalles del usuario seleccionado.
+     */
     private void openUserDetailsWindow() {
         int selectedRow = getSelectedRow();
         if (selectedRow == -1) {
@@ -113,6 +134,11 @@ public class VistaAdmin extends JFrame {
 
         detailsFrame.setVisible(true);
     }
+
+    /**
+     * Abre una ventana para editar los detalles de un usuario.
+     * @param usuario El usuario que se desea editar.
+     */
     private void openEditUserWindow(Usuario usuario) {
         JFrame editFrame = new JFrame("Editar Usuario");
         editFrame.setSize(400, 300);
@@ -142,6 +168,10 @@ public class VistaAdmin extends JFrame {
 
         editFrame.setVisible(true);
     }
+
+    /**
+     * Abre una ventana para crear un nuevo usuario.
+     */
     private void openCreateUserWindow() {
         JFrame createFrame = new JFrame("Crear Usuario");
         createFrame.setSize(400, 300);
@@ -201,6 +231,11 @@ public class VistaAdmin extends JFrame {
 
         createFrame.setVisible(true);
     }
+
+    /**
+     * Obtiene el índice de la fila seleccionada en la tabla.
+     * @return El índice de la fila seleccionada o -1 si no hay ninguna seleccionada.
+     */
     private int getSelectedRow() {
         for (int i = 0; i < userTable.getRowCount(); i++) {
             if ((boolean) userTable.getValueAt(i, 0)) {
@@ -210,4 +245,3 @@ public class VistaAdmin extends JFrame {
         return -1;
     }
 }
-

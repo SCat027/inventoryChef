@@ -1,11 +1,9 @@
 package inventoryChef;
 
 import datos.Archivo;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
-
 
 import java.io.File;
 import java.io.FileWriter;
@@ -15,6 +13,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Clase de prueba unitaria para probar las funcionalidades de la clase InventoryChef.
+ * Esta clase realiza pruebas de los métodos de creación, eliminación y gestión de usuarios, recetas y productos.
+ */
 public class InventoryChefTest {
 
     // Los datos predeterminados de usuarios, esto se hace para poder modificar los archivos a gusto durante las pruebas
@@ -27,7 +29,10 @@ public class InventoryChefTest {
     ]
     """;
 
-    // Se ejecuta DESPUES de cada prueba para limpiar y generar el archivo usuarios.json
+    /**
+     * Metodo que se ejecuta DESPUES de cada prueba para limpiar y generar el archivo usuarios.json.
+     * Elimina los archivos generados durante la prueba y genera un archivo "usuarios.json" con datos predeterminados.
+     */
     @AfterEach
     void limpiarArchivos() {
         // Eliminar archivos generados durante la prueba
@@ -35,13 +40,15 @@ public class InventoryChefTest {
         new File("recetas.json").delete();
 
         // Se crea el archivo usuarios.json con los datos predefinidos
-        // Esto para que el programa pueda iniciar con normalidad
         try (FileWriter writer = new FileWriter("usuarios.json")) {
             writer.write(USUARIOS_JSON);
         } catch (IOException e) { e.printStackTrace(); }
     }
 
-    // Se limpian los archivos anteriormente creados
+    /**
+     * Metodo que se ejecuta antes de cada prueba para limpiar y configurar el estado inicial.
+     * Inicializa los archivos con listas vacías para los usuarios, alimentos y recetas.
+     */
     @BeforeEach
     void setUp() {
         Archivo.guardarUsuarios(new ArrayList<>());
@@ -49,9 +56,12 @@ public class InventoryChefTest {
         Archivo.guardarRecetas(new ArrayList<>());
     }
 
-    // Se prueban los metodos de:
-    // - Admin.crearUsuario()
-    // - Usuario.getRol()
+    /**
+     * Prueba para verificar la creación y consulta de usuarios.
+     * Se prueba la funcionalidad de los métodos:
+     * - Admin.crearUsuario()
+     * - Usuario.getRol()
+     */
     @Test
     void testCrearYConsultarUsuario() {
         // Se hace el Admin
@@ -69,9 +79,12 @@ public class InventoryChefTest {
         assertEquals("Chef", usuarios.get(0).getRol());
     }
 
-    // Se prueban los metodos de:
-    // - admin.crearUsuario()
-    // - admin.eliminarUsuario()
+    /**
+     * Prueba para verificar la eliminación de un usuario.
+     * Se prueba la funcionalidad de los métodos:
+     * - admin.crearUsuario()
+     * - admin.eliminarUsuario()
+     */
     @Test
     void testEliminarUsuario() {
         // Se hace el Admin
@@ -86,9 +99,12 @@ public class InventoryChefTest {
         assertEquals(0, usuarios.size());
     }
 
-    // Se prueban los metodos de:
-    // - Archivo.guardarAlimentos()
-    // - chef.crearReceta()
+    /**
+     * Prueba para verificar la creación de una receta.
+     * Se prueba la funcionalidad de los métodos:
+     * - Archivo.guardarAlimentos()
+     * - chef.crearReceta()
+     */
     @Test
     void testCrearReceta() {
         // Se crea el chef
@@ -115,21 +131,22 @@ public class InventoryChefTest {
         assertEquals("Ensalada", recetas.get(0).getNombre()); // Que la receta tenga su nombre de "Ensalada"
     }
 
-    // Se prueban los metodos de:
-    // - Archivo.guardarAlimentos()
-    // - Alimento.getCantidad()
-    // - chef.haceReceta()
+    /**
+     * Prueba para verificar la acción de hacer una receta.
+     * Se prueba la funcionalidad de los métodos:
+     * - Archivo.guardarAlimentos()
+     * - Alimento.getCantidad()
+     * - chef.haceReceta()
+     */
     @Test
     void testHacerReceta() {
         Chef chef = new Chef("ChefUser", "chef@test.com", 25, "chef1", "password");
 
         // Se crea el tomate (Cantidad en el almacen)
-        // - Cantidad 10
         Alimento tomate = new Alimento("Tomate", 0.5, "Vegetal", 10);
         Archivo.guardarAlimentos(List.of(tomate));
 
         // Se crea el ingrediente (Cantidad necesaria para la receta)
-        // - Cantidad 5
         Ingrediente ingrediente = new Ingrediente(tomate, 5);
         Receta receta = new Receta("Ensalada", List.of(ingrediente), "Mezclar los ingredientes.");
         chef.crearReceta(receta);
@@ -142,8 +159,11 @@ public class InventoryChefTest {
         assertEquals(5, almacen.get(0).getCantidad());
     }
 
-    // Se prueban los metodos de:
-    // - reponedor.añadirProducto()
+    /**
+     * Prueba para verificar la adición de un producto al almacén.
+     * Se prueba la funcionalidad de los métodos:
+     * - reponedor.añadirProducto()
+     */
     @Test
     void testAñadirProductoAlmacen() {
         Reponedor reponedor = new Reponedor("Reponedor", "reponedor@test.com", 30, "rep1", "password");
@@ -157,12 +177,14 @@ public class InventoryChefTest {
         assertEquals("Lechuga", almacen.get(0).getNombre());
     }
 
-    // Se prueban los metodos de:
-    // - reponedor.añadirProducto()
-    // - reponedor.eliminarProducto()
+    /**
+     * Prueba para verificar la eliminación de un producto existente en el almacén.
+     * Se prueba la funcionalidad de los métodos:
+     * - reponedor.añadirProducto()
+     * - reponedor.eliminarProducto()
+     */
     @Test
     void testEliminarProductoExistente() {
-        // Asegurarse de que haya productos en el almacén antes de realizar la prueba
         List<Alimento> alimentosIniciales = new ArrayList<>();
         alimentosIniciales.add(new Alimento("Manzana", 1.5, "Fruta", 50));
         alimentosIniciales.add(new Alimento("Pan", 0.8, "Panadería", 100));
@@ -176,7 +198,7 @@ public class InventoryChefTest {
         boolean resultado = reponedor.eliminarProducto("Tomate");
 
         // Verificar que el producto fue eliminado
-        assertTrue(resultado, "El producto debería haberse eliminado correctamente (Osea = True)");
+        assertTrue(resultado, "El producto debería haberse eliminado correctamente");
 
         // Cargar los alimentos desde el archivo para verificar que "Tomate" ha sido eliminado
         List<Alimento> alimentosCargados = Archivo.cargarAlimentos();
@@ -184,9 +206,12 @@ public class InventoryChefTest {
         assertFalse(alimentosCargados.stream().anyMatch(a -> a.getNombre().equalsIgnoreCase("Tomate")), "El producto \"Tomate\" debería haber sido eliminado.");
     }
 
-    // Se prueban los metodos de:
-    // - reponedor.añadirProducto()
-    // - reponedor.eliminarProducto()
+    /**
+     * Prueba para verificar la eliminación de un producto inexistente en el almacén.
+     * Se prueba la funcionalidad de los métodos:
+     * - reponedor.añadirProducto()
+     * - reponedor.eliminarProducto()
+     */
     @Test
     void testEliminarProductoInexistente() {
         List<Alimento> alimentosIniciales = new ArrayList<>();
@@ -201,27 +226,30 @@ public class InventoryChefTest {
         boolean resultado = reponedor.eliminarProducto("Cebolla");
 
         // Verificar que el producto no fue eliminado
-        assertFalse(resultado, "El producto no debería haberse eliminado porque no existe (Osea = False)");
+        assertFalse(resultado, "El producto no debería haberse eliminado porque no existe");
 
         // Cargar los alimentos desde el archivo para verificar que el inventario no cambió
         List<Alimento> alimentosCargados = Archivo.cargarAlimentos();
         assertEquals(3, alimentosCargados.size(), "El número de productos en el almacén debería seguir siendo 3");
     }
 
-    // Se prueban los metodos de:
-    // - reponedor.añadirProducto()
-    // - reponedor.eliminarProducto()
+    /**
+     * Prueba para verificar la eliminación de un producto cuando el almacén está vacío.
+     * Se prueba la funcionalidad de los métodos:
+     * - reponedor.añadirProducto()
+     * - reponedor.eliminarProducto()
+     */
     @Test
     void testEliminarProductoDeAlmacenVacio() {
         // Eliminar todos los productos para dejar el almacén vacío
         Archivo.guardarAlimentos(new ArrayList<>());
 
-        // Intentar eliminar un producto que no esta
+        // Intentar eliminar un producto que no está
         Exception exception = assertThrows(IllegalStateException.class, () -> {
             Reponedor.eliminarProducto("Tomate");
         });
 
         // Verificar que se lanza una excepción porque no hay productos para eliminar
-        assertEquals("No hay productos para eliminar.", exception.getMessage(), "Se debería lanzar una excepción si no hay productos");
+        assertEquals("No hay productos para eliminar.", exception.getMessage());
     }
 }

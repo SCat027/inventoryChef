@@ -7,16 +7,43 @@ import util.InicioSesion;
 import datos.Archivo;
 import java.util.List;
 
-public class  TodosController {
+/**
+ * Clase TodosController que centraliza operaciones relacionadas con usuarios,
+ * autenticación, generación de IDs, gestión de alimentos y recetas.
+ */
+public class TodosController {
+
+    /**
+     * Valida las credenciales de inicio de sesión de un usuario.
+     *
+     * @param id Identificador del usuario.
+     * @param contrasena Contraseña del usuario.
+     * @return Usuario autenticado si las credenciales son correctas, null en caso contrario.
+     */
     public Usuario validarInicio(String id, String contrasena) {
         InicioSesion inicioSesion = new InicioSesion();
-        return  inicioSesion.autenticar(id,contrasena);
+        return inicioSesion.autenticar(id, contrasena);
     }
-    public String autenticarRol(Usuario usuario){
+
+    /**
+     * Autentica y devuelve el rol de un usuario.
+     *
+     * @param usuario Usuario a autenticar.
+     * @return Rol del usuario como cadena de texto.
+     */
+    public String autenticarRol(Usuario usuario) {
         InicioSesion inicioSesion = new InicioSesion();
         System.out.println(inicioSesion.entregarRol(usuario));
-        return  inicioSesion.entregarRol(usuario);
+        return inicioSesion.entregarRol(usuario);
     }
+
+    /**
+     * Genera un nuevo identificador único basado en el rol del usuario.
+     *
+     * @param rol Rol del usuario (e.g., "admin", "reponedor", "chef").
+     * @return Nuevo identificador único.
+     * @throws IllegalArgumentException Si el rol proporcionado no es válido.
+     */
     public int generarIdPorRol(String rol) {
         int prefijo;
         switch (rol.toLowerCase()) {
@@ -43,12 +70,31 @@ public class  TodosController {
         }
         return nuevoId;
     }
-    public List<Usuario> cargarUsuarios(){
+
+    /**
+     * Carga todos los usuarios desde el archivo de almacenamiento.
+     *
+     * @return Lista de usuarios.
+     */
+    public List<Usuario> cargarUsuarios() {
         return Archivo.cargarUsuarios();
     }
-    public List<Alimento> cargarAlmacen(){
+
+    /**
+     * Carga todos los alimentos desde el almacén.
+     *
+     * @return Lista de alimentos.
+     */
+    public List<Alimento> cargarAlmacen() {
         return Archivo.cargarAlimentos();
     }
+
+    /**
+     * Busca un producto alimenticio por su nombre en el almacén.
+     *
+     * @param nombre Nombre del alimento a buscar.
+     * @return Alimento encontrado, o null si no se encuentra.
+     */
     public Alimento buscarProductoPorNombre(String nombre) {
         List<Alimento> almacen = cargarAlmacen();
         if (almacen == null || almacen.isEmpty()) {
@@ -59,9 +105,22 @@ public class  TodosController {
                 .findFirst()
                 .orElse(null);
     }
-    public List<Receta> cargarRecetas(){
+
+    /**
+     * Carga todas las recetas desde el archivo de almacenamiento.
+     *
+     * @return Lista de recetas.
+     */
+    public List<Receta> cargarRecetas() {
         return Archivo.cargarRecetas();
     }
+
+    /**
+     * Busca una receta por su nombre en el archivo de recetas.
+     *
+     * @param nombre Nombre de la receta a buscar.
+     * @return Receta encontrada, o null si no se encuentra.
+     */
     public Receta buscarRecetaPorNombre(String nombre) {
         List<Receta> recetas = cargarRecetas();
         return recetas.stream()
@@ -69,7 +128,4 @@ public class  TodosController {
                 .findFirst()
                 .orElse(null);
     }
-
-
-
 }
