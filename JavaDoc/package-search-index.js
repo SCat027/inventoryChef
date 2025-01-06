@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"controller"},{"l":"datos"},{"l":"gui.admin"},{"l":"gui.chef"},{"l":"gui.inicioSesion"},{"l":"gui.reponedor"},{"l":"inventoryChef"},{"l":"util"}];updateSearchResults();
