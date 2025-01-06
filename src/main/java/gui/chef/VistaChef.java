@@ -28,14 +28,12 @@ public class VistaChef extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Panel superior con botón para agregar recetas
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton agregarRecetaBtn = new JButton("Agregar Receta");
         agregarRecetaBtn.addActionListener(e -> crearReceta());
         topPanel.add(agregarRecetaBtn);
         add(topPanel, BorderLayout.NORTH);
 
-        // Tabla para mostrar recetas
         tableModel = new DefaultTableModel(new Object[]{"Nombre de la Receta"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -47,7 +45,6 @@ public class VistaChef extends JFrame {
         JScrollPane scrollPane = new JScrollPane(recipeTable);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Panel inferior con botones de acción
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         JButton verDetallesBtn = new JButton("Ver Detalles");
@@ -146,7 +143,6 @@ public class VistaChef extends JFrame {
             return;
         }
 
-        // Obtener el nombre de la receta seleccionada
         String nombreReceta = (String) tableModel.getValueAt(selectedRow, 0); // Asumiendo que la columna 0 tiene el nombre
         Receta recetaSeleccionada = controller.buscarRecetaPorNombre(nombreReceta);
 
