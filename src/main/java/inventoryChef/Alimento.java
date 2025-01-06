@@ -4,7 +4,7 @@ import datos.Archivo;
 import java.util.List;
 
 /**
- * Clase que representa un alimento en el sistema de inventario.
+ * Clase que representa un alimento
  */
 public class Alimento {
     private String nombre;
@@ -13,19 +13,19 @@ public class Alimento {
     private int cantidad;
 
     /**
-     * Constructor por defecto para la clase Alimento.
-     * Inicializa un objeto Alimento sin valores específicos.
+     * Constructor por defecto para la clase Alimento
+     * Inicializa un objeto Alimento sin valores
      */
     public Alimento() {
     }
 
     /**
-     * Constructor parametrizado para inicializar un alimento con datos específicos.
+     * Constructor parametrizado para inicializar un alimento
      *
-     * @param nombre    Nombre del alimento.
-     * @param precio    Precio del alimento.
-     * @param categoria Categoría del alimento (e.g., "Frutas", "Carnes").
-     * @param cantidad  Cantidad disponible del alimento en el inventario.
+     * @param nombre    Nombre
+     * @param precio    Precio
+     * @param categoria Categoría del alimento (e.g., "Frutas", "Carnes")
+     * @param cantidad  Cantidad disponible del alimento en el inventario
      */
     public Alimento(String nombre, double precio, String categoria, int cantidad) {
         this.nombre = nombre;
@@ -35,45 +35,45 @@ public class Alimento {
     }
 
     /**
-     * Obtiene el nombre del alimento.
+     * Obtiene el nombre del alimento
      *
-     * @return Nombre del alimento.
+     * @return Nombre del alimento
      */
     public String getNombre() {
         return nombre;
     }
 
     /**
-     * Obtiene el precio del alimento.
+     * Obtiene el precio del alimento
      *
-     * @return Precio del alimento.
+     * @return Precio del alimento
      */
     public double getPrecio() {
         return precio;
     }
 
     /**
-     * Establece un nuevo precio para el alimento.
+     * Establece un nuevo precio para el alimento
      *
-     * @param precio Nuevo precio del alimento.
+     * @param precio Nuevo precio del alimento
      */
     public void setPrecio(double precio) {
         this.precio = precio;
     }
 
     /**
-     * Obtiene la cantidad disponible del alimento en el inventario.
+     * Obtiene la cantidad disponible del alimento en el inventario
      *
-     * @return Cantidad disponible del alimento.
+     * @return Cantidad disponible del alimento
      */
     public int getCantidad() {
         return cantidad;
     }
 
     /**
-     * Establece una nueva cantidad para el alimento en el inventario.
+     * Establece una nueva cantidad para el alimento en el inventario
      *
-     * @param cantidad Nueva cantidad del alimento.
+     * @param cantidad Nueva cantidad del alimento
      */
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;

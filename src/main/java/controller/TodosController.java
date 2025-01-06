@@ -8,17 +8,17 @@ import datos.Archivo;
 import java.util.List;
 
 /**
- * Clase TodosController que centraliza operaciones relacionadas con usuarios,
- * autenticación, generación de IDs, gestión de alimentos y recetas.
+ * Clase TodosController que centraliza operaciones relacionadas con usuarios
+ * autenticación, generación de IDs, gestión de alimentos y recetas
  */
 public class TodosController {
 
     /**
-     * Valida las credenciales de inicio de sesión de un usuario.
+     * Valida las credenciales de inicio de sesión de un usuario
      *
-     * @param id Identificador del usuario.
-     * @param contrasena Contraseña del usuario.
-     * @return Usuario autenticado si las credenciales son correctas, null en caso contrario.
+     * @param id Identificador del usuario
+     * @param contrasena Contraseña del usuario
+     * @return Usuario autenticado si las credenciales son correctas, null en caso contrario
      */
     public Usuario validarInicio(String id, String contrasena) {
         InicioSesion inicioSesion = new InicioSesion();
@@ -26,10 +26,10 @@ public class TodosController {
     }
 
     /**
-     * Autentica y devuelve el rol de un usuario.
+     * Autentica y devuelve el rol de un usuario
      *
-     * @param usuario Usuario a autenticar.
-     * @return Rol del usuario como cadena de texto.
+     * @param usuario Usuario a autenticar
+     * @return Rol del usuario como cadena de texto
      */
     public String autenticarRol(Usuario usuario) {
         InicioSesion inicioSesion = new InicioSesion();
@@ -38,11 +38,11 @@ public class TodosController {
     }
 
     /**
-     * Genera un nuevo identificador único basado en el rol del usuario.
+     * Genera un nuevo identificador único basado en el rol del usuario
      *
-     * @param rol Rol del usuario (e.g., "admin", "reponedor", "chef").
+     * @param rol Rol del usuario (e.g., "admin", "reponedor", "chef")
      * @return Nuevo identificador único.
-     * @throws IllegalArgumentException Si el rol proporcionado no es válido.
+     * @throws IllegalArgumentException Si el rol proporcionado no es válido
      */
     public int generarIdPorRol(String rol) {
         int prefijo;
@@ -72,28 +72,28 @@ public class TodosController {
     }
 
     /**
-     * Carga todos los usuarios desde el archivo de almacenamiento.
+     * Carga todos los usuarios desde el archivo de almacenamiento
      *
-     * @return Lista de usuarios.
+     * @return Lista de usuarios
      */
     public List<Usuario> cargarUsuarios() {
         return Archivo.cargarUsuarios();
     }
 
     /**
-     * Carga todos los alimentos desde el almacén.
+     * Carga todos los alimentos desde el almacén
      *
-     * @return Lista de alimentos.
+     * @return Lista de alimentos
      */
     public List<Alimento> cargarAlmacen() {
         return Archivo.cargarAlimentos();
     }
 
     /**
-     * Busca un producto alimenticio por su nombre en el almacén.
+     * Busca un producto alimenticio por su nombre en el almacén
      *
-     * @param nombre Nombre del alimento a buscar.
-     * @return Alimento encontrado, o null si no se encuentra.
+     * @param nombre Nombre del alimento a buscar
+     * @return Alimento encontrado, o null si no se encuentra
      */
     public Alimento buscarProductoPorNombre(String nombre) {
         List<Alimento> almacen = cargarAlmacen();
@@ -107,19 +107,19 @@ public class TodosController {
     }
 
     /**
-     * Carga todas las recetas desde el archivo de almacenamiento.
+     * Carga todas las recetas desde el archivo de almacenamiento
      *
-     * @return Lista de recetas.
+     * @return Lista de recetas
      */
     public List<Receta> cargarRecetas() {
         return Archivo.cargarRecetas();
     }
 
     /**
-     * Busca una receta por su nombre en el archivo de recetas.
+     * Busca una receta por su nombre en el archivo de recetas
      *
-     * @param nombre Nombre de la receta a buscar.
-     * @return Receta encontrada, o null si no se encuentra.
+     * @param nombre Nombre de la receta a buscar
+     * @return Receta encontrada, o null si no se encuentra
      */
     public Receta buscarRecetaPorNombre(String nombre) {
         List<Receta> recetas = cargarRecetas();

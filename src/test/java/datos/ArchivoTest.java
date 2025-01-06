@@ -41,6 +41,18 @@ class ArchivoTest {
     ]
     """;
 
+    private static String ALMACEN_JSON = """
+    [
+        {"nombre":"Platano","precio":550.0,"cantidad":990}
+    ]
+    """;
+
+    private static String RECETAS_JSON = """
+    [
+        {"nombre":"platano frito","ingredientes":[{"alimento":{"nombre":"Platano","precio":550.0,"cantidad":30},"cantidad":10}],"instrucciones":"agarras un platano y lo fries y te lo comes"}
+    ]
+    """;
+
     /**
      * Metodo que se ejecuta antes de cada prueba para preparar los datos.
      * Inicializa los objetos de tipo Alimento, Ingrediente, Receta y Usuario.
@@ -84,12 +96,27 @@ class ArchivoTest {
     @AfterEach
     void limpiarArchivos() {
         // Eliminar archivos generados durante la prueba
+        new File("usuarios.json").delete();
         new File("almacen.json").delete();
         new File("recetas.json").delete();
 
-        // Se crea el archivo usuarios.json con los datos predefinidos
+        // Crear el archivo usuarios.json con los datos predefinidos
         try (FileWriter writer = new FileWriter("usuarios.json")) {
             writer.write(USUARIOS_JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Crear el archivo almacen.json con los datos predeterminados
+        try (FileWriter writer = new FileWriter("almacen.json")) {
+            writer.write(ALMACEN_JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Crear el archivo recetas.json con los datos predeterminados
+        try (FileWriter writer = new FileWriter("recetas.json")) {
+            writer.write(RECETAS_JSON);
         } catch (IOException e) {
             e.printStackTrace();
         }

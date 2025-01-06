@@ -15,27 +15,27 @@ import java.awt.event.ActionListener;
 
 /**
  * Clase que representa la ventana de inicio de sesión para diferentes tipos de usuarios
- * (Chef, Admin y Reponedor) en un sistema de gestión de inventarios.
+ * (Chef, Admin y Reponedor) en un sistema de gestión de inventarios
  */
 public class InicioSesionVista extends JFrame {
 
     /**
-     * Campo de texto para ingresar el nombre de usuario.
+     * Campo de texto para ingresar el nombre de usuario
      */
     private JTextField usernameField;
 
     /**
-     * Campo de contraseña para ingresar la contraseña del usuario.
+     * Campo de contraseña para ingresar la contraseña del usuario
      */
     private JPasswordField passwordField;
 
     /**
-     * Botón para iniciar sesión.
+     * Botón para iniciar sesión
      */
     private JButton loginButton;
 
     /**
-     * Constructor que inicializa la ventana de inicio de sesión.
+     * Constructor que inicializa la ventana de inicio de sesión
      */
     public InicioSesionVista() {
         setTitle("Inicio de Sesión");
@@ -162,9 +162,9 @@ public class InicioSesionVista extends JFrame {
     }
 
     /**
-     * Metodo principal para ejecutar la ventana de inicio de sesión.
+     * Metodo principal para ejecutar la ventana de inicio de sesión
      *
-     * @param args Argumentos de la línea de comandos.
+     * @param args Argumentos de la línea de comandos
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

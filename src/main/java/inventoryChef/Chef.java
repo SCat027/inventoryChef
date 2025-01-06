@@ -4,19 +4,19 @@ import datos.Archivo;
 import java.util.List;
 
 /**
- * Clase Chef que extiende la clase Usuario.
- * Representa un chef en el sistema, con funcionalidades específicas relacionadas con recetas.
+ * Clase Chef que extiende la clase Usuario
+ * Representa un chef en el sistema, con funcionalidades relacionadas con las recetas
  */
 public class Chef extends Usuario {
 
     /**
-     * Constructor parametrizado para inicializar un Chef con datos específicos.
+     * Constructor parametrizado para inicializar un Chef con datos específicos
      *
-     * @param nombre      Nombre del chef.
-     * @param correo      Correo electrónico del chef.
-     * @param edad        Edad del chef.
-     * @param id          ID del chef.
-     * @param contrasena  Contraseña del chef.
+     * @param nombre      Nombre
+     * @param correo      Correo electrónico
+     * @param edad        Edad
+     * @param id          ID
+     * @param contrasena  Contraseña
      */
     public Chef(String nombre, String correo, int edad, String id, String contrasena) {
         super(nombre, correo, edad, id, contrasena);
@@ -24,8 +24,8 @@ public class Chef extends Usuario {
     }
 
     /**
-     * Consulta y muestra en consola las recetas disponibles.
-     * Incluye el nombre, ingredientes y las instrucciones de cada receta.
+     * Consulta y muestra en consola las recetas disponibles
+     * Incluye el nombre, ingredientes y las instrucciones de cada receta
      */
     public void consultarRecetas() {
         List<Receta> recetas = cargarRecetas();
@@ -47,11 +47,11 @@ public class Chef extends Usuario {
     }
 
     /**
-     * Crea una nueva receta y la guarda en el sistema.
+     * Crea una nueva receta y la guarda en el sistema
      *
-     * @param receta Objeto Receta a crear.
-     * @throws IllegalStateException    Si no se pudo cargar la lista de recetas.
-     * @throws IllegalArgumentException Si la receta ya existe.
+     * @param receta Objeto Receta a crear
+     * @throws IllegalStateException    Si no se pudo cargar la lista de recetas
+     * @throws IllegalArgumentException Si la receta ya existe
      */
     public void crearReceta(Receta receta) {
         List<Receta> recetas = cargarRecetas();
@@ -67,11 +67,11 @@ public class Chef extends Usuario {
     }
 
     /**
-     * Elimina una receta existente por su nombre.
+     * Elimina una receta existente por su nombre
      *
-     * @param nombreReceta Nombre de la receta a eliminar.
-     * @throws IllegalStateException    Si no hay recetas registradas.
-     * @throws IllegalArgumentException Si la receta no existe.
+     * @param nombreReceta Nombre de la receta a eliminar
+     * @throws IllegalStateException    Si no hay recetas registradas
+     * @throws IllegalArgumentException Si la receta no existe
      */
     public void eliminarReceta(String nombreReceta) {
         List<Receta> recetas = cargarRecetas();
@@ -87,12 +87,12 @@ public class Chef extends Usuario {
     }
 
     /**
-     * Edita las instrucciones de una receta existente.
+     * Edita las instrucciones de una receta existente
      *
-     * @param nombre             Nombre de la receta a editar.
-     * @param nuevasInstrucciones Nuevas instrucciones de la receta.
-     * @throws IllegalStateException    Si no se pudo cargar la lista de recetas.
-     * @throws IllegalArgumentException Si la receta no existe.
+     * @param nombre             Nombre de la receta
+     * @param nuevasInstrucciones Nuevas instrucciones de la receta
+     * @throws IllegalStateException    Si no se pudo cargar la lista de recetas
+     * @throws IllegalArgumentException Si la receta no existe
      */
     public void editarRecetaInstrucciones(String nombre, String nuevasInstrucciones) {
         List<Receta> recetas = cargarRecetas();
@@ -110,11 +110,11 @@ public class Chef extends Usuario {
     }
 
     /**
-     * Elabora una receta, descontando los ingredientes utilizados del almacén.
+     * Elabora una receta, descontando los ingredientes utilizados del almacén
      *
-     * @param nombreReceta Nombre de la receta a elaborar.
-     * @throws IllegalStateException    Si no se pudo cargar la lista de recetas o el almacén.
-     * @throws IllegalArgumentException Si la receta no existe o no hay ingredientes suficientes.
+     * @param nombreReceta Nombre de la receta a elaborar
+     * @throws IllegalStateException    Si no se pudo cargar la lista de recetas o el almacén
+     * @throws IllegalArgumentException Si la receta no existe o no hay ingredientes suficientes
      */
     public void haceReceta(String nombreReceta) {
         List<Receta> recetas = cargarRecetas();

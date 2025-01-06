@@ -1,6 +1,6 @@
 /**
- * Clase VistaChef que representa la interfaz gráfica para la gestión de recetas del chef.
- * Permite crear, ver detalles, editar, eliminar y realizar recetas, interactuando con el inventario.
+ * Clase VistaChef que representa la interfaz gráfica para la gestión de recetas del chef
+ * Permite crear, ver detalles, editar, eliminar y realizar recetas, interactuando con el inventario
  */
 package gui.chef;
 
@@ -22,8 +22,8 @@ public class VistaChef extends JFrame {
     private DefaultTableModel tableModel; // Modelo de datos para la tabla
 
     /**
-     * Constructor que inicializa la vista del chef.
-     * @param chef Objeto Chef que gestionará las recetas.
+     * Constructor que inicializa la vista del chef
+     * @param chef Objeto Chef que gestionará las recetas
      */
     public VistaChef(Chef chef) {
         this.chef = chef;
@@ -32,7 +32,7 @@ public class VistaChef extends JFrame {
     }
 
     /**
-     * Metodo para inicializar los componentes de la interfaz gráfica.
+     * Metodo para inicializar los componentes de la interfaz gráfica
      */
     private void iniciarChef() {
         setTitle("Gestión de Recetas - Chef");
@@ -78,7 +78,7 @@ public class VistaChef extends JFrame {
     }
 
     /**
-     * Metodo para cargar las recetas en la tabla desde el controlador.
+     * Metodo para cargar las recetas en la tabla desde el controlador
      */
     private void cargarRecetas() {
         tableModel.setRowCount(0); // Limpiar la tabla
@@ -91,7 +91,7 @@ public class VistaChef extends JFrame {
     }
 
     /**
-     * Metodo para realizar una receta seleccionada en la tabla.
+     * Metodo para realizar una receta seleccionada en la tabla
      */
     private void hacerReceta() {
         int selectedRow = recipeTable.getSelectedRow();
@@ -109,7 +109,7 @@ public class VistaChef extends JFrame {
     }
 
     /**
-     * Metodo para mostrar los detalles de una receta seleccionada.
+     * Metodo para mostrar los detalles de una receta seleccionada
      */
     private void verDetalles() {
         int selectedRow = recipeTable.getSelectedRow();
@@ -157,7 +157,7 @@ public class VistaChef extends JFrame {
         detallesDialog.setVisible(true);
     }
     /**
-     * Metodo para eliminar una receta seleccionada de la tabla y del sistema.
+     * Metodo para eliminar una receta seleccionada de la tabla y del sistema
      */
     private void eliminarReceta() {
         int selectedRow = recipeTable.getSelectedRow();
@@ -193,7 +193,7 @@ public class VistaChef extends JFrame {
     }
 
     /**
-     * Metodo para crear una nueva receta solicitando los datos al usuario.
+     * Metodo para crear una nueva receta solicitando los datos al usuario
      */
     private void crearReceta() {
         String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre de la receta:");
@@ -261,7 +261,7 @@ public class VistaChef extends JFrame {
     }
 
     /**
-     * Metodo para editar las instrucciones de una receta seleccionada.
+     * Metodo para editar las instrucciones de una receta seleccionada
      */
     private void editarReceta() {
         int selectedRow = recipeTable.getSelectedRow();

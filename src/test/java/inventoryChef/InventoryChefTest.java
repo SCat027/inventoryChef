@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class InventoryChefTest {
 
-    // Los datos predeterminados de usuarios, esto se hace para poder modificar los archivos a gusto durante las pruebas
+    // Datos predeterminados de los archivos
     private static String USUARIOS_JSON = """
     [
         {"nombre":"Eduardo","correo":"eduardo@gmail.com","edad":21,"id":"1001","contrasena":"eduardocrack12","rol":"Admin"},
@@ -29,20 +29,49 @@ public class InventoryChefTest {
     ]
     """;
 
+    private static String ALMACEN_JSON = """
+    [
+        {"nombre":"Platano","precio":550.0,"cantidad":990}
+    ]
+    """;
+
+    private static String RECETAS_JSON = """
+    [
+        {"nombre":"platano frito","ingredientes":[{"alimento":{"nombre":"Platano","precio":550.0,"cantidad":30},"cantidad":10}],"instrucciones":"agarras un platano y lo fries y te lo comes"}
+    ]
+    """;
+
     /**
-     * Metodo que se ejecuta DESPUES de cada prueba para limpiar y generar el archivo usuarios.json.
-     * Elimina los archivos generados durante la prueba y genera un archivo "usuarios.json" con datos predeterminados.
+     * Metodo que se ejecuta después de cada prueba para limpiar los archivos generados.
+     * Los archivos `usuarios.json`, `almacen.json` y `recetas.json` se eliminan y luego se vuelven a crear con los datos predeterminados.
      */
     @AfterEach
     void limpiarArchivos() {
         // Eliminar archivos generados durante la prueba
+        new File("usuarios.json").delete();
         new File("almacen.json").delete();
         new File("recetas.json").delete();
 
-        // Se crea el archivo usuarios.json con los datos predefinidos
+        // Crear el archivo usuarios.json con los datos predefinidos
         try (FileWriter writer = new FileWriter("usuarios.json")) {
             writer.write(USUARIOS_JSON);
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Crear el archivo almacen.json con los datos predeterminados
+        try (FileWriter writer = new FileWriter("almacen.json")) {
+            writer.write(ALMACEN_JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Crear el archivo recetas.json con los datos predeterminados
+        try (FileWriter writer = new FileWriter("recetas.json")) {
+            writer.write(RECETAS_JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

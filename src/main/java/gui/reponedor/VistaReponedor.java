@@ -1,7 +1,6 @@
 /**
- * Clase VistaReponedor.
- * Representa la interfaz gráfica para un usuario reponedor que gestiona el inventario de productos.
- * Permite visualizar, agregar, editar y eliminar productos del inventario.
+ * Representa la interfaz gráfica para un usuario reponedor que gestiona el inventario de productos
+ * Permite visualizar, agregar, editar y eliminar productos del inventario
  */
 package gui.reponedor;
 
@@ -16,34 +15,34 @@ import java.util.List;
 public class VistaReponedor extends JFrame {
 
     /**
-     * Instancia del usuario reponedor asociado a la vista.
+     * Instancia del usuario reponedor asociado a la vista
      */
     private Reponedor reponedor;
 
     /**
-     * Marco principal de la ventana.
+     * Marco principal de la ventana
      */
     private JFrame mainFrame;
 
     /**
-     * Tabla para visualizar los productos.
+     * Tabla para visualizar los productos
      */
     private JTable productTable;
 
     /**
-     * Modelo de datos para la tabla de productos.
+     * Modelo de datos para la tabla de productos
      */
     private DefaultTableModel tableModel;
 
     /**
-     * Controlador para gestionar las operaciones del inventario.
+     * Controlador para gestionar las operaciones del inventario
      */
     private TodosController controller;
 
     /**
-     * Constructor de la clase VistaReponedor.
+     * Constructor de la clase VistaReponedor
      *
-     * @param reponedor Instancia del reponedor que utiliza esta vista.
+     * @param reponedor Instancia del reponedor que utiliza esta vista
      */
     public VistaReponedor(Reponedor reponedor) {
         this.reponedor = reponedor;

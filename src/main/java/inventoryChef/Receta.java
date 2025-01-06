@@ -3,8 +3,8 @@ package inventoryChef;
 import java.util.List;
 
 /**
- * Clase Receta que representa una receta de cocina.
- * Contiene un nombre, una lista de ingredientes y las instrucciones para su preparación.
+ * Clase Receta que representa una receta de cocina
+ * Contiene un nombre, una lista de ingredientes y las instrucciones para su preparación
  */
 public class Receta {
     private String nombre;
@@ -12,17 +12,17 @@ public class Receta {
     private String instrucciones;
 
     /**
-     * Constructor por defecto.
+     * Constructor por defecto
      */
     public Receta() {
     }
 
     /**
-     * Constructor parametrizado para inicializar una receta con un nombre, ingredientes e instrucciones.
+     * Constructor parametrizado para inicializar una receta
      *
-     * @param nombre        Nombre de la receta.
-     * @param ingredientes  Lista de ingredientes necesarios para la receta.
-     * @param instrucciones Instrucciones para preparar la receta.
+     * @param nombre        Nombre
+     * @param ingredientes  Lista de ingredientes necesarios
+     * @param instrucciones Instrucciones
      */
     public Receta(String nombre, List<Ingrediente> ingredientes, String instrucciones) {
         this.nombre = nombre;
@@ -31,36 +31,36 @@ public class Receta {
     }
 
     /**
-     * Obtiene el nombre de la receta.
+     * Obtiene el nombre de la receta
      *
-     * @return Nombre de la receta.
+     * @return Nombre de la receta
      */
     public String getNombre() {
         return nombre;
     }
 
     /**
-     * Obtiene la lista de ingredientes necesarios para la receta.
+     * Obtiene la lista de ingredientes necesarios para la receta
      *
-     * @return Lista de objetos Ingrediente.
+     * @return Lista de objetos Ingrediente
      */
     public List<Ingrediente> getIngredientes() {
         return ingredientes;
     }
 
     /**
-     * Obtiene las instrucciones para preparar la receta.
+     * Obtiene las instrucciones para preparar la receta
      *
-     * @return Instrucciones de la receta.
+     * @return Instrucciones de la receta
      */
     public String getInstrucciones() {
         return instrucciones;
     }
 
     /**
-     * Establece nuevas instrucciones para preparar la receta.
+     * Establece nuevas instrucciones para preparar la receta
      *
-     * @param instrucciones Nuevas instrucciones de preparación.
+     * @param instrucciones Nuevas instrucciones de preparación
      */
     public void setInstrucciones(String instrucciones) {
         this.instrucciones = instrucciones;

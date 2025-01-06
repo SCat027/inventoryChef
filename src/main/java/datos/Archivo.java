@@ -8,15 +8,15 @@ import inventoryChef.*;
 
 /**
  * Clase para manejar la lectura y escritura de datos relacionados con los alimentos,
- * usuarios y recetas utilizando archivos JSON.
+ * usuarios y recetas utilizando archivos JSON
  */
 public class Archivo {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     /**
-     * Guarda la lista de alimentos en un archivo JSON.
+     * Guarda la lista de alimentos en un archivo JSON
      *
-     * @param alimentos Lista de alimentos a guardar.
+     * @param alimentos Lista de alimentos a guardar
      */
     public static void guardarAlimentos(List<Alimento> alimentos) {
         try {
@@ -28,9 +28,9 @@ public class Archivo {
     }
 
     /**
-     * Carga la lista de alimentos desde el archivo JSON.
+     * Carga la lista de alimentos desde el archivo JSON
      *
-     * @return Lista de alimentos cargada desde el archivo. Si ocurre un error, devuelve una lista vacía.
+     * @return Lista de alimentos cargada desde el archivo. Si ocurre un error, devuelve una lista vacía
      */
     public static List<Alimento> cargarAlimentos() {
         ObjectMapper mapper = new ObjectMapper(); // Instancia del mapper
@@ -52,9 +52,9 @@ public class Archivo {
     }
 
     /**
-     * Guarda la lista de usuarios en un archivo JSON.
+     * Guarda la lista de usuarios en un archivo JSON
      *
-     * @param usuarios Lista de usuarios a guardar.
+     * @param usuarios Lista de usuarios a guardar
      */
     public static void guardarUsuarios(List<Usuario> usuarios) {
         try {
@@ -66,9 +66,9 @@ public class Archivo {
     }
 
     /**
-     * Carga la lista de usuarios desde el archivo JSON.
+     * Carga la lista de usuarios desde el archivo JSON
      *
-     * @return Lista de usuarios cargada desde el archivo. Si ocurre un error, devuelve una lista vacía.
+     * @return Lista de usuarios cargada desde el archivo. Si ocurre un error, devuelve una lista vacía
      */
     public static List<Usuario> cargarUsuarios() {
         ObjectMapper mapper = new ObjectMapper(); // Instancia del mapper
@@ -92,9 +92,9 @@ public class Archivo {
     }
 
     /**
-     * Guarda la lista de recetas en un archivo JSON.
+     * Guarda la lista de recetas en un archivo JSON
      *
-     * @param recetas Lista de recetas a guardar.
+     * @param recetas Lista de recetas a guardar
      */
     public static void guardarRecetas(List<Receta> recetas) {
         try {
@@ -106,9 +106,9 @@ public class Archivo {
     }
 
     /**
-     * Carga la lista de recetas desde el archivo JSON.
+     * Carga la lista de recetas desde el archivo JSON
      *
-     * @return Lista de recetas cargada desde el archivo. Si ocurre un error, devuelve null.
+     * @return Lista de recetas cargada desde el archivo. Si ocurre un error, devuelve null
      */
     public static List<Receta> cargarRecetas() {
         ObjectMapper mapper = new ObjectMapper();
